@@ -12,7 +12,7 @@ forked from [lvermeulen/Keycloak.Net](https://github.com/lvermeulen/Keycloak.Net
 ![.netstandard 1.4](https://img.shields.io/badge/netstandard-1.4-yellowgreen.svg)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B11767%2Fgithub.com%2Flvermeulen%2FKeycloak.Net.svg?type=shield)](https://app.fossa.com/projects/custom%2B11767%2Fgithub.com%2Flvermeulen%2FKeycloak.Net?ref=badge_shield)
 
-C# client for [Keycloak](https://www.keycloak.org/).
+C# SDK client for [Keycloak](https://www.keycloak.org/).
 
 See documentation at [https://www.keycloak.org/documentation](https://www.keycloak.org/documentation).
 
