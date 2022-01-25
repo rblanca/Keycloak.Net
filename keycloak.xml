@@ -1,0 +1,9 @@
+﻿<keycloak>
+  <version>16.0</version>
+  <docs>
+    <api>https://www.keycloak.org/docs-api/16.0/rest-api/index.html</api>
+    <doc>https://www.keycloak.org/docs/16.0</doc>
+    <github>https://github.com/keycloak/keycloak-documentation/blob/main</github>
+    <javadocs>https://www.keycloak.org/docs-api/16.0/javadocs</javadocs>
+  </docs>
+</keycloak>

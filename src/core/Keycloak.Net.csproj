@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Keycloak.Net.snk</AssemblyOriginatorKeyFile>
+    <NoWarn>S4136</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Keycloak.Net</Product>
+    <Description>C# client for Keycloak</Description>
+    <Authors>Alex Soh,Luk Vermeulen</Authors>
+    <Copyright>Copyright 2022 by Alex Soh, Luk Vermeulen. All rights reserved.</Copyright>
+    <PackageIconUrl>https://i.imgur.com/eEjfRLz.jpg?2</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/lvermeulen/Keycloak.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/takato1314/Keycloak.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/takato1314/Keycloak.Net</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>master</RepositoryBranch>
+    <PackageTags>keycloak</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Flurl.Http" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\shared\Keycloak.Net.Shared.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>Keycloak.Net.Shared.dll</IncludeAssets>
+    </ProjectReference>
+    <ProjectReference Include="..\model\Keycloak.Net.Model.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>Keycloak.Net.Model.dll</IncludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <!--https://stackoverflow.com/a/64583406/3104587-->
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+</Project>
