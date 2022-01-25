@@ -1,0 +1,1 @@
+{"message":"No metadata is generated for Keycloak.Net.Docs.","source":"MetadataCommand.ExtractMetadata","date_time":"2022-01-25T09:05:56.2387004Z","message_severity":"warning","correlation_id":"94535459-BAEC-4469-9E70-8601D533B04B.1.1.11"}
