@@ -1,0 +1,7 @@
+- name: Keycloak Administration REST API
+  href: https://www.keycloak.org/docs-api/16.0/rest-api/index.html
+  items:
+    - name: OpenAPI Specification
+      href: https://keycloak.discourse.group/t/openapi-specification-for-keycloak-rest-apis/5872
+    - name: Postman Collection
+      href: https://documenter.getpostman.com/view/544865/UVXoktn2#b02f1d80-a9e1-426e-951a-6336be2964df

@@ -1,0 +1,9 @@
+- name: Home
+  href: index.md
+- name: Articles
+  href: articles/
+  homepage: articles/solution.md
+- name: API Documentation
+  href: api/
+- name: REST API Documentation
+  href: restapi/

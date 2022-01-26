@@ -20,7 +20,10 @@
         "files": ["api/**/*.yml", "api/**/*.md"]
       },
       {
-        "files": ["articles/**/*.md", "restapi/**/*.md"]
+        "files": ["articles/**/*.yml", "articles/**/*.md"]
+      },
+      {
+        "files": ["restapi/**/*.yml", "restapi/**/*.md"]
       },
       {
         "files": ["toc.md", "index.md"]
