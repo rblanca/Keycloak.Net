@@ -23,7 +23,7 @@
         "files": ["articles/**/*.md", "restapi/**/*.md"]
       },
       {
-        "files": ["toc.yml", "index.md"]
+        "files": ["toc.md", "index.md"]
       }
     ],
     "resource": [
@@ -32,7 +32,7 @@
       }
     ],
     "globalMetadata": {
-      "_appLogoPath": "",
+      "_appLogoPath": "logo",
       "_appFaviconPath": "../../favicon.ico",
       "_enableSearch": true,
       "_disableNavbar": false,
