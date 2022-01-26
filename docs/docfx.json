@@ -32,7 +32,7 @@
       }
     ],
     "globalMetadata": {
-      "_appLogoPath": "../../logo.jpg",
+      "_appLogoPath": "",
       "_appFaviconPath": "../../favicon.ico",
       "_enableSearch": true,
       "_disableNavbar": false,
