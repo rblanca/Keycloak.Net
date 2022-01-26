@@ -3,27 +3,27 @@
     {
       "src": [
         {
-          "files": ["**/**.csproj"],
-          "src": "./../src"
+          "files": ["core/**.csproj", "model/**.csproj"],
+          "exclude": ["**/bin/**", "**/obj/**"],
+          "src": "../src",
+          "properties": {
+            "TargetFramework": "net6.0"
+          }
         }
       ],
-      "dest": "api",
-      "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "dest": "api"
     }
   ],
   "build": {
     "content": [
       {
-        "files": ["api/**.yml", "api/**.md"]
+        "files": ["api/**/*.yml", "api/**/*.md"]
       },
       {
-        "files": [
-          "articles/**",
-          "restapi/**",
-          "toc.yml",
-          "*.md"
-        ]
+        "files": ["articles/**/*.md", "restapi/**/*.md"]
+      },
+      {
+        "files": ["toc.yml", "index.md"]
       }
     ],
     "resource": [
@@ -31,17 +31,25 @@
         "files": ["images/**"]
       }
     ],
-    "dest": "_site",
     "globalMetadata": {
-      "_enableSearch": true
+      "_appLogoPath": "../../logo.jpg",
+      "_appFaviconPath": "../../favicon.ico",
+      "_enableSearch": true,
+      "_disableNavbar": false,
+      "_disableBreadcrumb": false,
+      "_disableToc": false,
+      "_disableAffix": false,
+      "_disableContribution": false
     },
+    "dest": "_site",
+    "externalReference": [],
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": ["default"],
     "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
-    "keepFileLink": false,
+    "keepFileLink": true,
     "cleanupCacheHistory": false,
     "disableGitFeatures": false
   }
