@@ -97,6 +97,7 @@ namespace Keycloak.Net
 
         /// <summary>
         /// POST /{realm}/users/{userId}/impersonation <br/>
+        /// Login as this user. If user is in same realm as you, your current login session will be logged out before you are logged in as this user.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId">user id</param>
