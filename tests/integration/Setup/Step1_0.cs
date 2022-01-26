@@ -92,10 +92,10 @@ namespace Keycloak.Net.Tests
         [Fact, TestCasePriority(23)]
         public async Task AssignRolesToTestClientUserAsync()
         {
-            _availableClientRoles = await _keycloak.GetAvailableClientRoleMappingsForUserAsync(_realm, _testClientUser.Id, _realmManagementClient.Id);
+            _availableClientRoles = await _keycloak.GetAvailableClientRolesForUserAsync(_realm, _testClientUser.Id, _realmManagementClient.Id);
             _availableClientRoles.Should().NotBeNullOrEmpty();
 
-            var result = await _keycloak.AddClientRoleMappingsToUserAsync(_realm, _testClientUser.Id, _realmManagementClient.Id, _availableClientRoles);
+            var result = await _keycloak.AddClientRolesToUserAsync(_realm, _testClientUser.Id, _realmManagementClient.Id, _availableClientRoles);
             result.Should().BeTrue();
         }
 
@@ -127,10 +127,10 @@ namespace Keycloak.Net.Tests
         [Fact, TestCasePriority(32)]
         public async Task AssignRolesToAdminUserAsync()
         {
-            _availableClientRoles = await _keycloak.GetAvailableClientRoleMappingsForUserAsync(_realm, _fixture.User.Id, _realmManagementClient.Id);
+            _availableClientRoles = await _keycloak.GetAvailableClientRolesForUserAsync(_realm, _fixture.User.Id, _realmManagementClient.Id);
             _availableClientRoles.Should().NotBeNullOrEmpty();
 
-            var result = await _keycloak.AddClientRoleMappingsToUserAsync(_realm, _fixture.User.Id, _realmManagementClient.Id, _availableClientRoles);
+            var result = await _keycloak.AddClientRolesToUserAsync(_realm, _fixture.User.Id, _realmManagementClient.Id, _availableClientRoles);
             result.Should().BeTrue();
         }
 

@@ -35,35 +35,35 @@ namespace Keycloak.Net.Tests
         {
             _fixture.Client = (await _keycloak.GetClientsAsync(_realm, _fixture.Client.ClientId!)).Single();
             _fixture.Group = (await _keycloak.GetGroupsAsync(_realm, search: _fixture.Group.Name)).Single();
-            _availableClientRoles = await _keycloak.GetAvailableClientRoleMappingsForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
+            _availableClientRoles = await _keycloak.GetAvailableClientRolesForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
             _availableClientRoles.Should().NotBeNullOrEmpty();
         }
 
         [Fact, TestCasePriority(-9)]
         public async Task AddClientRoleMappingsToGroupAsync()
         {
-            var result = await _keycloak.AddClientRoleMappingsToGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!, _availableClientRoles);
+            var result = await _keycloak.AddClientRolesToGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!, _availableClientRoles);
             result.Should().BeTrue();
         }
 
         [Fact, TestCasePriority(-8)]
         public async Task GetClientRoleMappingsForGroupAsync()
         {
-            var result = await _keycloak.GetClientRoleMappingsForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
+            var result = await _keycloak.GetClientRolesForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
             result.Should().BeEquivalentTo(_availableClientRoles);
         }
 
         [Fact]
         public async Task GetEffectiveClientRoleMappingsForGroupAsync()
         {
-            var result = await _keycloak.GetEffectiveClientRoleMappingsForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
+            var result = await _keycloak.GetEffectiveClientRolesForGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!);
             result.Should().BeEquivalentTo(_availableClientRoles);
         }
 
         [Fact, TestCasePriority(10)]
         public async Task DeleteClientRoleMappingsFromGroupAsync()
         {
-            var result = await _keycloak.DeleteClientRoleMappingsFromGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!, _availableClientRoles);
+            var result = await _keycloak.DeleteClientRolesFromGroupAsync(_realm, _fixture.Group.Id!, _fixture.Client.Id!, _availableClientRoles);
             result.Should().BeTrue();
         }
 
@@ -75,35 +75,35 @@ namespace Keycloak.Net.Tests
         public async Task GetAvailableClientRoleMappingsForUserAsync()
         {
             _fixture.User = (await _keycloak.GetUsersAsync(_realm, username: _fixture.User.UserName)).Single();
-            _availableClientRoles = await _keycloak.GetAvailableClientRoleMappingsForUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!);
+            _availableClientRoles = await _keycloak.GetAvailableClientRolesForUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!);
             _availableClientRoles.Should().NotBeNullOrEmpty();
         }
 
         [Fact, TestCasePriority(-10)]
         public async Task AddClientRoleMappingsToUserAsync()
         {
-            var result = await _keycloak.AddClientRoleMappingsToUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!, _availableClientRoles);
+            var result = await _keycloak.AddClientRolesToUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!, _availableClientRoles);
             result.Should().BeTrue();
         }
 
         [Fact, TestCasePriority(-9)]
         public async Task GetClientRoleMappingsForUserAsync()
         {
-            var result = await _keycloak.GetClientRoleMappingsForUserAsync(_realm, "c2589ac8-9056-408a-ac4b-f2f982038272", "370a5b68-b8c2-437e-bbbe-d2c1994d65fe");
+            var result = await _keycloak.GetClientRolesForUserAsync(_realm, "c2589ac8-9056-408a-ac4b-f2f982038272", "370a5b68-b8c2-437e-bbbe-d2c1994d65fe");
             result.Should().BeEquivalentTo(_availableClientRoles);
         }
 
         [Fact]
         public async Task GetEffectiveClientRoleMappingsForUserAsync()
         {
-            var result = await _keycloak.GetEffectiveClientRoleMappingsForUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!);
+            var result = await _keycloak.GetEffectiveClientRolesForUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!);
             result.Should().BeEquivalentTo(_availableClientRoles);
         }
 
         [Fact, TestCasePriority(10)]
         public async Task DeleteClientRoleMappingsFromUserAsync()
         {
-            var result = await _keycloak.DeleteClientRoleMappingsFromUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!, _availableClientRoles);
+            var result = await _keycloak.DeleteClientRolesFromUserAsync(_realm, _fixture.User.Id!, _fixture.Client.Id!, _availableClientRoles);
             result.Should().BeTrue();
         }
 

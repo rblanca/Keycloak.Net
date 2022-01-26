@@ -18,7 +18,7 @@ namespace Keycloak.Net
         /// <param name="groupId"></param>
         /// <param name="clientId">realm name (not id!)</param>
         /// <param name="roles"></param>
-        public async Task<bool> AddClientRoleMappingsToGroupAsync(
+        public async Task<bool> AddClientRolesToGroupAsync(
             string realm, 
             string groupId, 
             string clientId,
@@ -38,7 +38,7 @@ namespace Keycloak.Net
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
         /// <param name="clientId"></param>
-        public async Task<IEnumerable<Role>> GetClientRoleMappingsForGroupAsync(string realm, string groupId,
+        public async Task<IEnumerable<Role>> GetClientRolesForGroupAsync(string realm, string groupId,
             string clientId)
         {
             var response = await GetBaseUrl()
@@ -56,7 +56,7 @@ namespace Keycloak.Net
         /// <param name="groupId"></param>
         /// <param name="clientId"></param>
         /// <param name="roles"></param>
-        public async Task<bool> DeleteClientRoleMappingsFromGroupAsync(
+        public async Task<bool> DeleteClientRolesFromGroupAsync(
             string realm, 
             string groupId, 
             string clientId,
@@ -76,7 +76,7 @@ namespace Keycloak.Net
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
         /// <param name="clientId"></param>
-        public async Task<IEnumerable<Role>> GetAvailableClientRoleMappingsForGroupAsync(
+        public async Task<IEnumerable<Role>> GetAvailableClientRolesForGroupAsync(
             string realm, 
             string groupId,
             string clientId)
@@ -96,7 +96,7 @@ namespace Keycloak.Net
         /// <param name="groupId"></param>
         /// <param name="clientId"></param>
         /// <param name="briefRepresentation">if false, return roles with their attributes</param>
-        public async Task<IEnumerable<Role>> GetEffectiveClientRoleMappingsForGroupAsync(
+        public async Task<IEnumerable<Role>> GetEffectiveClientRolesForGroupAsync(
             string realm,
             string groupId,
             string clientId,
@@ -127,7 +127,7 @@ namespace Keycloak.Net
         /// <param name="userId">user id</param>
         /// <param name="clientId"></param>
         /// <param name="roles"></param>
-        public async Task<bool> AddClientRoleMappingsToUserAsync(string realm, string userId, string clientId,
+        public async Task<bool> AddClientRolesToUserAsync(string realm, string userId, string clientId,
             IEnumerable<Role> roles)
         {
             var response = await GetBaseUrl()
@@ -144,7 +144,7 @@ namespace Keycloak.Net
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId">user id</param>
         /// <param name="clientId"></param>
-        public async Task<IEnumerable<Role>> GetClientRoleMappingsForUserAsync(string realm, string userId,
+        public async Task<IEnumerable<Role>> GetClientRolesForUserAsync(string realm, string userId,
             string clientId)
         {
             var response = await GetBaseUrl()
@@ -162,7 +162,7 @@ namespace Keycloak.Net
         /// <param name="userId">user id</param>
         /// <param name="clientId"></param>
         /// <param name="roles"></param>
-        public async Task<bool> DeleteClientRoleMappingsFromUserAsync(string realm, string userId, string clientId,
+        public async Task<bool> DeleteClientRolesFromUserAsync(string realm, string userId, string clientId,
             IEnumerable<Role> roles)
         {
             var response = await GetBaseUrl()
@@ -179,7 +179,7 @@ namespace Keycloak.Net
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId"></param>
         /// <param name="clientId"></param>
-        public async Task<IEnumerable<Role>> GetAvailableClientRoleMappingsForUserAsync(string realm, string userId,
+        public async Task<IEnumerable<Role>> GetAvailableClientRolesForUserAsync(string realm, string userId,
             string clientId)
         {
             var response = await GetBaseUrl()
@@ -196,7 +196,7 @@ namespace Keycloak.Net
         /// <param name="realm"></param>
         /// <param name="userId"></param>
         /// <param name="clientId"></param>
-        public async Task<IEnumerable<Role>> GetEffectiveClientRoleMappingsForUserAsync(string realm, string userId,
+        public async Task<IEnumerable<Role>> GetEffectiveClientRolesForUserAsync(string realm, string userId,
             string clientId)
         {
             var response = await GetBaseUrl()

@@ -243,6 +243,7 @@ namespace Keycloak.Net
                 .SetQueryParams(queryParams)
                 .GetJsonAsync<IEnumerable<UserSession>>()
                 .ConfigureAwait(false);
+
             return response;
         }
 
@@ -258,6 +259,7 @@ namespace Keycloak.Net
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}/service-account-user")
                 .GetJsonAsync<User>()
                 .ConfigureAwait(false);
+
             return response;
         }
 

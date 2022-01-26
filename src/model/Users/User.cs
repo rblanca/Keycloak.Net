@@ -51,7 +51,7 @@ namespace Keycloak.Net.Model.Users
         public IEnumerable<string>? Groups { get; set; }
 
         [JsonProperty("id")]
-        public string? Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [JsonProperty("lastName")]
         public string? LastName { get; set; }
