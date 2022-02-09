@@ -4,13 +4,16 @@ using Xunit;
 
 namespace Keycloak.Net.Tests
 {
-    [Collection(KeycloakClientTests.RootCollection)]
+    /// <summary>
+    /// Integration tests for Uma2 'Authentication'.
+    /// </summary>
+    [Collection(KeycloakClientTests.Authentication)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class RootTest
+    public class Uma2Test
     {
-        public RootTest(KeycloakFixture fixture)
+        public Uma2Test(KeycloakFixture fixture)
         {
-            _keycloak = fixture.TestClient;
+            _keycloak = fixture.TestNoAuthClient;
             _fixture = fixture;
             _realm = fixture.Realm._Realm;
         }
@@ -24,17 +27,10 @@ namespace Keycloak.Net.Tests
         #endregion
 
         [Fact]
-        public async Task GetServerInfoAsync()
+        public async Task GetUma2ConfigurationAsync()
         {
-            var result = await _keycloak.GetServerInfoAsync(_realm);
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task CorsPreflightAsync()
-        {
-            bool? result = await _keycloak.CorsPreflightAsync(_realm);
-            result.Should().BeTrue();
+            var result = await _keycloak.GetUma2ConfigurationAsync(_realm);
+            result.Issuer!.AbsoluteUri.Should().NotBeNullOrEmpty();
         }
     }
 }

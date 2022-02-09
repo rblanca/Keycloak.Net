@@ -16,6 +16,7 @@ namespace Keycloak.Net.Tests
         internal const string Update = "Update data in Keycloak";
 
         internal const string RootCollection = nameof(RootCollection);
+        internal const string Authentication = nameof(Authentication);
         internal const string AuthenticationManagement = nameof(AuthenticationManagement);
         internal const string RealmsAdmin = nameof(RealmsAdmin);
         internal const string Users = nameof(Users);

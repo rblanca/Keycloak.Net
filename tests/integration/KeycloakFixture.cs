@@ -48,6 +48,8 @@ namespace Keycloak.Net.Tests
 
         public KeycloakClient TestClient { get; private set; }
 
+        public KeycloakClient TestNoAuthClient { get; private set; }
+
         public AuthenticatorProvider AuthenticatorProvider { get; set; }
 
         public AuthenticationFlow AuthenticationFlow { get; set; }
@@ -98,7 +100,8 @@ namespace Keycloak.Net.Tests
             _password = configuration["password"];
 
             AdminCliClient = new KeycloakClient(_url, MasterRealm, "admin-cli", _username, _password);
-            TestClient = new KeycloakClient(_url, Realm._Realm!, Client.ClientId, Client.Secret);
+            TestClient = new KeycloakClient(_url, Realm._Realm!, Client.ClientId, Client.Secret!);
+            TestNoAuthClient = new KeycloakClient(_url, Realm._Realm!, () => string.Empty);
         }
 
         private AuthenticatorProvider GetAuthenticatorProvider()

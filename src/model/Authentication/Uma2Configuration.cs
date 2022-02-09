@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Keycloak.Net.Model.Root
+namespace Keycloak.Net.Model.Authentication
 {
     /// <summary>
     /// The User-Managed Access 2.0 discovery endpoint that exposes the known authentication endpoints. <br/>

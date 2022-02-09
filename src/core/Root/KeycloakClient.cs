@@ -25,22 +25,5 @@ namespace Keycloak.Net
             
             return response.ResponseMessage.IsSuccessStatusCode;
         }
-
-        public async Task<OpenIdConfiguration> GetOpenIdConfigurationAsync(string realm)
-        {
-            var response = await GetBaseUrl()
-                .AppendPathSegment($"/realms/{realm}/.well-known/openid-configuration")
-                .GetJsonAsync<OpenIdConfiguration>()
-                .ConfigureAwait(false);
-            return response;
-        }
-        public async Task<Uma2Configuration> GetUma2ConfigurationAsync(string realm)
-        {
-            var response = await GetBaseUrl()
-                .AppendPathSegment($"/realms/{realm}/.well-known/uma2-configuration")
-                .GetJsonAsync<Uma2Configuration>()
-                .ConfigureAwait(false);
-            return response;
-        }
     }
 }

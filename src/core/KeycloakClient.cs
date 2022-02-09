@@ -74,6 +74,15 @@ namespace Keycloak.Net
             return request;
         }
 
+        private IFlurlRequest GetBaseUrlNoAuth()
+        {
+            var request = _url
+                .AppendPathSegment("/auth")
+                .ConfigureRequest(_ => { });
+
+            return request;
+        }
+
         /// <summary>
         /// Initialization settings
         /// </summary>

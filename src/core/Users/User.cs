@@ -77,11 +77,12 @@ namespace Keycloak.Net
                 [nameof(username)] = username
             };
 
-            return await GetBaseUrl()
+            var response = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/users")
                 .SetQueryParams(queryParams)
                 .GetJsonAsync<IEnumerable<User>>()
                 .ConfigureAwait(false);
+            return response;
         }
 
         /// <summary>

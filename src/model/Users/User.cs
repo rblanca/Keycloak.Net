@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Model.Users
@@ -134,7 +135,10 @@ namespace Keycloak.Net.Model.Users
         [JsonProperty("totp")]
         public bool? Totp { get; set; }
 
+        /// <summary>
+        /// The username.
+        /// </summary>
         [JsonProperty("username")]
-        public string? UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
     }
 }
