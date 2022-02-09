@@ -38,9 +38,13 @@ namespace Keycloak.Net.Tests
 
         #region Properties
 
-        private string _url;
         private string _username;
         private string _password;
+
+        /// <summary>
+        /// The keycloak server endpoint
+        /// </summary>
+        internal string Url { get; private set; }
 
         internal string MasterRealm => "master";
 
@@ -95,13 +99,13 @@ namespace Keycloak.Net.Tests
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
 
-            _url = configuration["url"];
+            Url = configuration["url"];
             _username = configuration["userName"];
             _password = configuration["password"];
 
-            AdminCliClient = new KeycloakClient(_url, MasterRealm, "admin-cli", _username, _password);
-            TestClient = new KeycloakClient(_url, Realm._Realm!, Client.ClientId, Client.Secret!);
-            TestNoAuthClient = new KeycloakClient(_url, Realm._Realm!, () => string.Empty);
+            AdminCliClient = new KeycloakClient(Url, MasterRealm, "admin-cli", _username, _password);
+            TestClient = new KeycloakClient(Url, Realm._Realm!, Client.ClientId, Client.Secret!);
+            TestNoAuthClient = new KeycloakClient(Url, Realm._Realm!, () => string.Empty);
         }
 
         private AuthenticatorProvider GetAuthenticatorProvider()
