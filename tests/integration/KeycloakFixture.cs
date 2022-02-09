@@ -105,7 +105,7 @@ namespace Keycloak.Net.Tests
 
             AdminCliClient = new KeycloakClient(Url, MasterRealm, "admin-cli", _username, _password);
             TestClient = new KeycloakClient(Url, Realm._Realm!, Client.ClientId, Client.Secret!);
-            TestNoAuthClient = new KeycloakClient(Url, Realm._Realm!, () => string.Empty);
+            TestNoAuthClient = new KeycloakClient(Url, () => string.Empty);
         }
 
         private AuthenticatorProvider GetAuthenticatorProvider()

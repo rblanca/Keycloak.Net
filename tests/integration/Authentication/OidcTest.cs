@@ -97,11 +97,24 @@ namespace Keycloak.Net.Tests
         [Fact]
         public async Task GetUserInfoAsync_BearerToken()
         {
-            var rawToken = await _keycloak.GetPasswordToken(_realm, _fixture.User.UserName, _fixture.Credential.Value!, "admin-cli");
-            var keycloak = new KeycloakClient(_fixture.Url, _realm, () => rawToken.AccessToken);
+            var rawToken = await _keycloak.GetPasswordToken(_realm, "admin-cli", _fixture.User.UserName, _fixture.Credential.Value!);
+            var keycloak = new KeycloakClient(_fixture.Url, () => rawToken.AccessToken);
             var result = await keycloak.GetUserinfoAsync(_realm);
             result.Should().NotBeNullOrEmpty();
             result[JwtClaimTypes.PreferredUserName].Should().Be("admin");
+        }
+
+        /// <summary>
+        /// Test keycloak client "Bearer" authentication by getting userinfo.
+        /// </summary>
+        [Fact]
+        public async Task GetUserInfoAsync_BearerTokenAsync()
+        {
+            var getTokenAsync = async () => (await _keycloak.GetClientCredentialsToken(_realm, _fixture.Client.ClientId, _fixture.Client.Secret!)).AccessToken;
+            var keycloak = new KeycloakClient(_fixture.Url, getTokenAsync);
+            var result = await keycloak.GetUserinfoAsync(_realm);
+            result.Should().NotBeNullOrEmpty();
+            result[JwtClaimTypes.PreferredUserName].Should().Be("service-account-testclient");
         }
 
         [Fact]
@@ -115,7 +128,7 @@ namespace Keycloak.Net.Tests
         [Fact]
         public async Task GetPasswordToken()
         {
-            var result = await _keycloak.GetPasswordToken(_realm, _fixture.User.UserName, _fixture.Credential.Value!, "admin-cli");
+            var result = await _keycloak.GetPasswordToken(_realm, "admin-cli", _fixture.User.UserName, _fixture.Credential.Value!);
             result.Should().NotBeNull();
             result.AccessToken.Should().NotBeNullOrEmpty();
         }

@@ -62,7 +62,7 @@ namespace Keycloak.Net
         }
 
         /// <summary>
-        /// Retrieve a token via client credentials flow.
+        /// Retrieve an access token via client credentials flow.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="clientId">the client id</param>
@@ -87,7 +87,7 @@ namespace Keycloak.Net
         }
 
         /// <summary>
-        /// Retrieve a token via password flow.
+        /// Retrieve an access token via password flow.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="username">the username</param>
@@ -95,9 +95,9 @@ namespace Keycloak.Net
         /// <param name="clientId">the client to get token from.</param>
         public async Task<IdentityProviderToken> GetPasswordToken(
             string realm,
+            string clientId,
             string username,
-            string password,
-            string clientId)
+            string password)
         {
             var response = await GetBaseUrlNoAuth()
                 .AppendPathSegment($"/realms/{realm}/protocol/openid-connect/token")
@@ -105,9 +105,9 @@ namespace Keycloak.Net
                 .PostUrlEncodedAsync(new List<KeyValuePair<string, string>>
                 {
                     new("grant_type", "password"),
+                    new("client_id", clientId),
                     new("username", username),
                     new("password", password),
-                    new("client_id", clientId)
                 })
                 .ReceiveJson<IdentityProviderToken>()
                 .ConfigureAwait(false);

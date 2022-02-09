@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Keycloak.Net.Model.Root;
 using Keycloak.Net.Shared.Extensions;
-
-#pragma warning disable 8618
 
 namespace Keycloak.Net
 {
@@ -19,77 +18,76 @@ namespace Keycloak.Net
     public partial class KeycloakClient
     {
         /// <inheritdoc cref="KeycloakClient"/>
-        private KeycloakClient(string url, string authenticationRealm)
+        private KeycloakClient(string url)
         {
             _url = url;
-            _authenticationRealm = authenticationRealm;
-
             Initialize();
         }
 
         /// <inheritdoc cref="KeycloakClient"/>
         public KeycloakClient(string url, string authenticationRealm, string clientId, string userName, string password)
-            : this(url, authenticationRealm)
+            : this(url)
         {
-            _clientId = clientId;
-            _userName = userName;
-            _password = password;
+            _withAuthenticationDelegate = request => request.WithAuthenticationAsync(authenticationRealm, clientId, userName, password);
         }
 
         /// <inheritdoc cref="KeycloakClient"/>
         public KeycloakClient(string url, string authenticationRealm, string clientId, string clientSecret)
-            : this(url, authenticationRealm)
+            : this(url)
         {
-            _clientId = clientId;
-            _clientSecret = clientSecret;
+            _withAuthenticationDelegate = request => request.WithAuthenticationAsync(authenticationRealm, clientId, clientSecret);
         }
 
         /// <inheritdoc cref="KeycloakClient"/>
-        public KeycloakClient(string url, string authenticationRealm, Func<string> getToken)
-            : this(url, authenticationRealm)
+        public KeycloakClient(string url, Func<string> getToken)
+            : this(url)
         {
-            _getToken = getToken;
+            _withAuthenticationDelegate = request => Task.FromResult(request.WithAuthentication(getToken));
+        }
+
+        /// <inheritdoc cref="KeycloakClient"/>
+        public KeycloakClient(string url, Func<Task<string>> getTokenAsync)
+            : this(url)
+        {
+            _withAuthenticationDelegate = async request => await request.WithAuthenticationAsync(getTokenAsync);
         }
 
         #region Properties
-        
+
         private readonly string _url;
-        private readonly string _userName;
-        private readonly string _password;
-        private readonly string _clientId;
-        private readonly string _clientSecret;
-        private readonly string _authenticationRealm;
-        private readonly Func<string> _getToken;
+        private readonly Func<IFlurlRequest, Task<IFlurlRequest>> _withAuthenticationDelegate = null!;
         private readonly ISerializer _serializer = new NewtonsoftJsonSerializer(JsonExtensions.JsonSerializerSettings);
         
         #endregion
         
+        /// <summary>
+        /// Get Keycloak base url with authentication header.
+        /// </summary>
         private IFlurlRequest GetBaseUrl()
         {
-            var request = _url
-                .AppendPathSegment("/auth")
-                .ConfigureRequest(_ => {})
-                .WithAuthentication(_getToken, _url, _authenticationRealm, _clientId, _userName, _password, _clientSecret);
-
+            var request = _withAuthenticationDelegate(GetBaseUrlNoAuth()).GetAwaiter().GetResult();
             return request;
         }
-
+        
+        /// <summary>
+        /// Get Keycloak base url without authentication header.
+        /// </summary>
         private IFlurlRequest GetBaseUrlNoAuth()
         {
             var request = _url
                 .AppendPathSegment("/auth")
                 .ConfigureRequest(_ => { });
-
             return request;
         }
 
         /// <summary>
-        /// Initialization settings
+        /// Initialization settings for Keycloak client.
         /// </summary>
         private void Initialize()
         {
             FlurlHttp.ConfigureClient(_url, client =>
             {
+                client.BaseUrl = _url;
                 client.Settings.JsonSerializer = _serializer;
                 client.Settings.OnErrorAsync = async call =>
                 {
