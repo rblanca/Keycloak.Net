@@ -16,7 +16,6 @@
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
-[Rr]eleases/
 x64/
 x86/
 bld/
@@ -328,5 +327,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/test/Keycloak.Net.Tests/appsettings.json
-/src/Keycloak.Net/.fossa.yml
+
+# Custom

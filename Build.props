@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <RuntimeIdentifier>$(BuildRuntimeIdentifier)</RuntimeIdentifier>
+  </PropertyGroup>
+</Project>
