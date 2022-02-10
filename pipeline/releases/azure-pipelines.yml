@@ -76,6 +76,7 @@ stages:
         useConfigFile: true
         configFilePath: 'GitVersion.yml'
         updateAssemblyInfo: true
+        additionalArguments: /ensureassemblyInfo
 
     - task: NuGetToolInstaller@1
       displayName: 'Use NuGet '
