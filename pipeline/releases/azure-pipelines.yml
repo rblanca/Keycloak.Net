@@ -70,6 +70,13 @@ stages:
       inputs:
         versionSpec: '5.x'
 
+    - task: gitversion/execute@0
+      displayName: Set GitVersion
+      inputs:
+        useConfigFile: true
+        configFilePath: 'GitVersion.yml'
+        updateAssemblyInfo: true
+
     - task: NuGetToolInstaller@1
       displayName: 'Use NuGet '
       inputs:
@@ -119,6 +126,8 @@ stages:
         packagesToPack: $(SolutionPath)/src/core/Keycloak.Net.csproj
         arguments:  -c $(BuildConfiguration) -p:BuildRuntimeIdentifier=$(TargetRuntime) --no-build
         zipAfterPublish: false
+        versioningScheme: byEnvVar
+        versionEnvVar: GitVersion.NuGetVersionV2
 
     - task: NuGetCommand@2
       displayName: 'publish nuget package to DmmFeed'
