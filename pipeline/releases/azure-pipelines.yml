@@ -128,7 +128,7 @@ stages:
         arguments:  -c $(BuildConfiguration) -p:BuildRuntimeIdentifier=$(TargetRuntime) --no-build
         zipAfterPublish: false
         versioningScheme: byEnvVar
-        versionEnvVar: GitVersion.NuGetVersionV2
+        versionEnvVar: GitVersion.SemVer
 
     - task: NuGetCommand@2
       displayName: 'publish nuget package to DmmFeed'
