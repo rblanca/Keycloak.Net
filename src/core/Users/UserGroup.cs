@@ -15,9 +15,10 @@ namespace Keycloak.Net
     {
         /// <summary>
         /// GET /{realm}/users/{userId}/groups <br/>
+        /// Get groups that is associated with the user.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
-        /// <param name="userId"></param>
+        /// <param name="userId">user id</param>
         /// <param name="briefRepresentation"></param>
         /// <param name="first"></param>
         /// <param name="max"></param>
@@ -47,6 +48,7 @@ namespace Keycloak.Net
 
         /// <summary>
         /// GET /{realm}/users/{userId}/groups/count <br/>
+        /// Get total group count that is associated with the user.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId">user id</param>
@@ -61,6 +63,7 @@ namespace Keycloak.Net
 
         /// <summary>
         /// PUT /{realm}/users/{userId}/groups/{groupId} <br/>
+        /// Update the group assignment for the user.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId">user id</param>
@@ -76,6 +79,7 @@ namespace Keycloak.Net
 
         /// <summary>
         /// DELETE /{realm}/users/{userId}/groups/{groupId} <br/>
+        /// Remove the group assignment for the user.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="userId">user id</param>

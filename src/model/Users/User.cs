@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Model.Users
@@ -16,7 +15,7 @@ namespace Keycloak.Net.Model.Users
         /// Additional user attributes and metadata.
         /// </summary>
         [JsonProperty("attributes")]
-        public IDictionary<string, string>? Attributes { get; set; }
+        public IDictionary<string, object>? Attributes { get; set; }
 
         [JsonProperty("clientConsents")]
         public IEnumerable<UserConsent>? ClientConsents { get; set; }

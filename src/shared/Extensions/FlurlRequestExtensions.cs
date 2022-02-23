@@ -26,14 +26,14 @@ namespace Keycloak.Net.Shared.Extensions
         /// <summary>
         /// Configures request to obtain an authentication bearer token via the delegate method specified.
         /// </summary>
-        public static async Task<IFlurlRequest> WithAuthenticationAsync(this IFlurlRequest request, Func<Task<string>> getTokenAsync)
+        public static async Task<IFlurlRequest> WithAuthenticationAsync(this IFlurlRequest request, Func<Task<string?>> getTokenAsync)
         {
-            var rawToken = await getTokenAsync();
+            var rawToken = await getTokenAsync() ?? string.Empty;
 
             // Token must not be prefixed
-            if (rawToken.StartsWith("Bearer"))
+            if (!string.IsNullOrEmpty(rawToken) && rawToken.StartsWith("Bearer"))
             {
-                rawToken = rawToken.Replace("Bearer", string.Empty);
+                rawToken = rawToken.Replace("Bearer", string.Empty).Trim();
             }
 
             return request.WithOAuthBearerToken(rawToken);

@@ -11,11 +11,11 @@ namespace Keycloak.Net
     public partial class KeycloakClient
     {
         /// <summary>
-        /// GET /{realm}/groups/{id}/members <br/>
+        /// GET /{realm}/groups/{groupId}/members <br/>
         /// Get users. Returns a stream of users, filtered according to query parameters.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
-        /// <param name="groupId"></param>
+        /// <param name="groupId">group id</param>
         /// <param name="briefRepresentation">
         /// Only return basic information (only guaranteed to return id, username, created, first and last name, email, enabled state, email verification state, federation link, and access.
         /// Note that it means that namely user attributes, required actions, and not before are not returned.)

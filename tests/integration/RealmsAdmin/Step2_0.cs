@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Flurl.Http;
 using Keycloak.Net.Model.RealmsAdmin;
+using Keycloak.Net.Model.Root;
 using Xunit;
 
 namespace Keycloak.Net.Tests
@@ -39,10 +41,10 @@ namespace Keycloak.Net.Tests
         }
 
         [Fact, TestCasePriority(-1)]
-        public async Task GetRealmAsync_NotExists_ShouldReturnNull()
+        public async Task GetRealmAsync_NotExists_ShouldThrowException()
         {
-            var result = await _keycloak.GetRealmAsync("realmNotExists");
-            result.Should().BeNull();
+            var act = async () => await _keycloak.GetRealmAsync("realmNotExists");
+            await act.Should().ThrowAsync<FlurlHttpException>().WithMessage("Call failed with status code 404 (Not Found)*");
         }
 
         [Fact]

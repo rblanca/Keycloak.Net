@@ -2,7 +2,6 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Keycloak.Net.Shared.Extensions
 {
@@ -12,20 +11,26 @@ namespace Keycloak.Net.Shared.Extensions
     public static class JsonExtensions
     {
         /// <summary>
-        /// Default Json.Net Serializer settings
+        /// Default JSON Serializer settings
         /// </summary>
-        public static JsonSerializerSettings JsonSerializerSettings => new()
+        public static Lazy<JsonSerializerSettings> JsonSerializerSettings => new(CreateJsonOptions);
+
+        private static JsonSerializerSettings CreateJsonOptions()
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            NullValueHandling = NullValueHandling.Ignore,
-            TypeNameHandling = TypeNameHandling.None,
-            DefaultValueHandling = DefaultValueHandling.Include,
-            PreserveReferencesHandling = PreserveReferencesHandling.None,
-            Formatting = Formatting.None,
-            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-            DateParseHandling = DateParseHandling.DateTimeOffset,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        };
+            var jsonOptions = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.None,
+                DateTimeZoneHandling = DateTimeZoneHandling.Local,
+                DateParseHandling = DateParseHandling.DateTimeOffset,
+                DefaultValueHandling = DefaultValueHandling.Include,
+                Formatting = Formatting.None,
+                NullValueHandling = NullValueHandling.Ignore,
+                PreserveReferencesHandling = PreserveReferencesHandling.None,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            return jsonOptions;
+        }
 
         /// <summary>
         /// Reads a json file and deserializes it to specified object type. 
@@ -33,7 +38,7 @@ namespace Keycloak.Net.Shared.Extensions
         public static T DeserializeJsonFromFile<T>(string file, JsonSerializerSettings? options = null)
         {
             using var reader = File.OpenText(file);
-            var result = JsonConvert.DeserializeObject<T>(reader.ReadToEnd(), options ?? JsonSerializerSettings);
+            var result = JsonConvert.DeserializeObject<T>(reader.ReadToEnd(), options ?? JsonSerializerSettings.Value);
 
             return result;
         }
@@ -43,14 +48,14 @@ namespace Keycloak.Net.Shared.Extensions
         /// </summary>
         public static T DeserializeJson<T>(this string json, JsonSerializerSettings? options = null)
         {
-            var result = JsonConvert.DeserializeObject<T>(json, options ?? JsonSerializerSettings);
+            var result = JsonConvert.DeserializeObject<T>(json, options ?? JsonSerializerSettings.Value);
             return result;
         }
 
         /// <inheritdoc cref="DeserializeJson{T}"/>
         public static object DeserializeJson(this string json, Type type, JsonSerializerSettings? options = null)
         {
-            var result = JsonConvert.DeserializeObject(json, type, options ?? JsonSerializerSettings);
+            var result = JsonConvert.DeserializeObject(json, type, options ?? JsonSerializerSettings.Value);
             return result;
         }
 
@@ -62,14 +67,14 @@ namespace Keycloak.Net.Shared.Extensions
         /// </summary>
         public static string SerializeJson<T>(this T obj, JsonSerializerSettings? options = null)
         {
-            var result =  JsonConvert.SerializeObject(obj, options ?? JsonSerializerSettings);
+            var result =  JsonConvert.SerializeObject(obj, options ?? JsonSerializerSettings.Value);
             return result;
         }
 
         /// <inheritdoc cref="SerializeJson{T}"/>
         public static string SerializeJson(this object obj, Type type, JsonSerializerSettings? options = null)
         {
-            var result = JsonConvert.SerializeObject(obj, type, options ?? JsonSerializerSettings);
+            var result = JsonConvert.SerializeObject(obj, type, options ?? JsonSerializerSettings.Value);
             return result;
         }
 

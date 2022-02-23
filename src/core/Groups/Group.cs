@@ -98,7 +98,7 @@ namespace Keycloak.Net
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
-        public async Task<Group> GetGroupAsync(string realm, string groupId)
+        public async Task<Group> GetGroupByIdAsync(string realm, string groupId)
         {
             var result = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}")
@@ -115,7 +115,7 @@ namespace Keycloak.Net
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
         /// <param name="group"></param>
-        public async Task<bool> UpdateGroupAsync(string realm, string groupId, Group group)
+        public async Task<bool> UpdateGroupByIdAsync(string realm, string groupId, Group group)
         {
             var response = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}")
@@ -129,7 +129,7 @@ namespace Keycloak.Net
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
-        public async Task<bool> DeleteGroupAsync(string realm, string groupId)
+        public async Task<bool> DeleteGroupByIdAsync(string realm, string groupId)
         {
             var response = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}")

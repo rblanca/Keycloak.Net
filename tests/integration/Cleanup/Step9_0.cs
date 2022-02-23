@@ -57,7 +57,7 @@ namespace Keycloak.Net.Tests
         [Fact, TestCasePriority(96)]
         public async Task DeleteGroupAsync()
         {
-            var result = await _keycloak.DeleteGroupAsync(_realm, _fixture.Group.Id!);
+            var result = await _keycloak.DeleteGroupByIdAsync(_realm, _fixture.Group.Id!);
             result.Should().BeTrue();
         }
 

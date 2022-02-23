@@ -31,7 +31,7 @@ namespace Keycloak.Net
         /// GET /{realm}/roles <br/>
         /// Get all roles in this realm.
         /// </summary>
-        public async Task<IEnumerable<Role>> GetRolesAsync(
+        public async Task<IEnumerable<Role>?> GetRolesAsync(
             string realm,
             bool? briefRepresentation = null,
             int? first = null,

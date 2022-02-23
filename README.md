@@ -28,14 +28,16 @@ See documentation at [https://www.keycloak.org/documentation](https://www.keyclo
 ## Features
 
 - [X] Attack Detection
+- [X] Authentication
 - [X] Authentication Management
+- [X] Authorization Management
 - [X] Client Attribute Certificate
 - [X] Client Initial Access
 - [X] Client Registration Policy
 - [X] Client Role Mappings
 - [X] Client Scopes
 - [X] Clients
-- [X] Component
+- [X] Components
 - [X] Groups
 - [X] Identity Providers
 - [X] Key

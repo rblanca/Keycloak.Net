@@ -15,13 +15,13 @@ namespace Keycloak.Net.Model.Groups
         /// Additional group attributes and metadata.
         /// </summary>
         [JsonProperty("attributes")]
-        public IDictionary<string, IEnumerable<string>>? Attributes { get; set; }
+        public IDictionary<string, object>? Attributes { get; set; }
 
         /// <summary>
         /// Client roles mapped to the group.
         /// </summary>
         [JsonProperty("clientRoles")]
-        public IDictionary<string, IEnumerable<string>>? ClientRoles { get; set; }
+        public IDictionary<string, string>? ClientRoles { get; set; }
 
         /// <summary>
         /// The identifier for this group.

@@ -15,7 +15,7 @@ namespace Keycloak.Net.Shared.Extensions
         {
             var builder = new StringBuilder();
             var count = 0;
-            Exception? currentException = exception;
+            var currentException = exception;
 
             do
             {

@@ -46,7 +46,7 @@ namespace Keycloak.Net.Tests
         [Fact]
         public async Task GetGroupAsync()
         {
-            var result = await _keycloak.GetGroupAsync(_realm, _fixture.Group.Id!);
+            var result = await _keycloak.GetGroupByIdAsync(_realm, _fixture.Group.Id!);
             result.Should().NotBeNull();
         }
 
@@ -61,7 +61,7 @@ namespace Keycloak.Net.Tests
         [Fact, TestCasePriority(2)]
         public async Task UpdateGroupAsync()
         {
-            var result = await _keycloak.UpdateGroupAsync(_realm, _fixture.Group.Id!, _fixture.Group);
+            var result = await _keycloak.UpdateGroupByIdAsync(_realm, _fixture.Group.Id!, _fixture.Group);
             result.Should().BeTrue();
         }
         
