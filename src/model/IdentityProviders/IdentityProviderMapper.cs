@@ -7,11 +7,11 @@ namespace Keycloak.Net.Model.IdentityProviders
     /// </summary>
     public class IdentityProviderMapper
     {
-        [JsonProperty("config")]
-        public IdentityProviderMapperConfig? Config { get; set; }
-
         [JsonProperty("id")]
         public string? Id { get; set; }
+
+        [JsonProperty("name")]
+        public string? Name { get; set; }
 
         [JsonProperty("identityProviderAlias")]
         public string? IdentityProviderAlias { get; set; }
@@ -19,7 +19,8 @@ namespace Keycloak.Net.Model.IdentityProviders
         [JsonProperty("identityProviderMapper")]
         public IdentityProviderMapperType MapperType { get; set; }
 
-        [JsonProperty("name")]
-        public string? Name { get; set; }
+        /// <inheritdoc cref="IdentityProviderMapperConfig"/>
+        [JsonProperty("config")]
+        public IdentityProviderMapperConfig? Config { get; set; }
     }
 }

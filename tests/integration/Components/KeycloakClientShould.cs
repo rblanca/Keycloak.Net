@@ -22,7 +22,7 @@ namespace Keycloak.Net.Tests
             string componentId = components.FirstOrDefault()?.Id;
             if (componentId != null)
             {
-                var result = await _client.GetComponentAsync(realm, componentId).ConfigureAwait(false);
+                var result = await _client.GetComponentByIdAsync(realm, componentId).ConfigureAwait(false);
                 Assert.NotNull(result);
             }
         }

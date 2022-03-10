@@ -64,6 +64,13 @@ namespace Keycloak.Net.Model.Clients
         public bool? BackchannelLogoutRevokeOfflineTokens { get; set; }
 
         /// <summary>
+        /// URL that will cause the client to log itself out when a logout request is sent to this realm (via end_session_endpoint).
+        /// If omitted, no logout request will be sent to the client is this case.
+        /// </summary>
+        [JsonProperty("frontchannel.logout.url")]
+        public string? FrontchannelLogoutUrl { get; set; }
+
+        /// <summary>
         /// If this is on, a refresh_token will be created and added to the token response if the client_credentials grant is used.
         /// The OAuth 2.0 RFC6749 Section 4.4.3 states that a refresh_token should not be generated when client_credentials grant is used.
         /// If this is off then no refresh_token will be generated and the associated user session will be removed.

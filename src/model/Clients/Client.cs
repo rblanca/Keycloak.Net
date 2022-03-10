@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Keycloak.Net.Shared.Json;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Model.Clients
