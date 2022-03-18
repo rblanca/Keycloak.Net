@@ -28,7 +28,7 @@ namespace Keycloak.Net.Model.Clients
         [JsonProperty("logic")]
         public PolicyDecisionLogic Logic { get; set; }
 
-        /// <inheritdoc cref="DecisionStrategy"/>
+        /// <inheritdoc cref="Keycloak.Net.Model.AuthorizationManagement.DecisionStrategy"/>
         public DecisionStrategy DecisionStrategy { get; set; }
 
         [JsonProperty("roles")]

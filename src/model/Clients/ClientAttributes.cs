@@ -175,7 +175,7 @@ namespace Keycloak.Net.Model.Clients
         [JsonProperty("oauth2.device.polling.interval")]
         public int? Oauth2DevicePollingInterval { get; set; }
 
-        /// <inheritdoc cref="PkceCodeChallengeMethod"/>
+        /// <inheritdoc cref="Keycloak.Net.Model.Clients.PkceCodeChallengeMethod"/>
         [JsonProperty("pkce.code.challenge.method")]
         public PkceCodeChallengeMethod? PkceCodeChallengeMethod { get; set; }
 

@@ -15,7 +15,7 @@ namespace Keycloak.Net.Model.Clients
         [JsonProperty("clientId")]
         public string? ClientId { get; set; }
 
-        /// <inheritdoc cref="DecisionStrategy"/>
+        /// <inheritdoc cref="Keycloak.Net.Model.AuthorizationManagement.DecisionStrategy"/>
         [JsonProperty("decisionStrategy")]
         public DecisionStrategy? DecisionStrategy { get; set; }
 

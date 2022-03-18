@@ -17,7 +17,7 @@ namespace Keycloak.Net.Model.Components
         [JsonProperty("connectionPooling")]
         public IEnumerable<bool>? ConnectionPooling { get; set; }
 
-        /// <inheritdoc cref="CachePolicy"/>
+        /// <inheritdoc cref="Keycloak.Net.Model.Components.CachePolicy"/>
         [JsonProperty("cachePolicy")]
         public IEnumerable<CachePolicy>? CachePolicy { get; set; }
 
