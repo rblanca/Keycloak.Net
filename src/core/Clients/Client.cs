@@ -51,6 +51,7 @@ namespace Keycloak.Net
         /// Get clients belonging to the realm. Returns a list of clients belonging to the realm.
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
+        /// <param name="briefRepresentation"></param>
         /// <param name="clientId">filter by clientId (not id!)</param>
         /// <param name="first">the first result</param>
         /// <param name="max">the max results to return</param>
@@ -59,6 +60,7 @@ namespace Keycloak.Net
         /// <param name="viewableOnly">filter clients that cannot be viewed in full by admin</param>
         public async Task<IEnumerable<Client>?> GetClientsAsync(
             string realm,
+            bool? briefRepresentation = null,
             string? clientId = null,
             int? first = null,
             int? max = null,
@@ -68,6 +70,7 @@ namespace Keycloak.Net
         {
             var queryParams = new Dictionary<string, object?>
             {
+                [nameof(briefRepresentation)] = briefRepresentation,
                 [nameof(clientId)] = clientId,
                 [nameof(first)] = first,
                 [nameof(max)] = max,
@@ -91,10 +94,17 @@ namespace Keycloak.Net
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="clientId">id of client (not <see cref="Client.ClientId"/>)</param>
-        public async Task<Client?> GetClientByIdAsync(string realm, string clientId)
+        /// <param name="briefRepresentation"></param>
+        public async Task<Client?> GetClientByIdAsync(string realm, string clientId, bool? briefRepresentation = null)
         {
+            var queryParams = new Dictionary<string, object?>
+            {
+                [nameof(briefRepresentation)] = briefRepresentation
+            };
+
             var response = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/clients/{clientId}")
+                .SetQueryParams(queryParams)
                 .GetJsonAsync<Client>()
                 .ConfigureAwait(false);
             return response;

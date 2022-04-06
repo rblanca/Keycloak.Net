@@ -59,10 +59,16 @@ namespace Keycloak.Net
         /// GET /{realm}/roles/{roleName} <br/>
         /// Get a specific role's representation in this realm by name.
         /// </summary>
-        public async Task<Role> GetRoleByNameAsync(string realm, string roleName)
+        public async Task<Role> GetRoleByNameAsync(string realm, string roleName, bool? briefRepresentation = null)
         {
+            var queryParams = new Dictionary<string, object?>
+            {
+                [nameof(briefRepresentation)] = briefRepresentation
+            };
+
             var response = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/roles/{roleName}")
+                .SetQueryParams(queryParams)
                 .GetJsonAsync<Role>()
                 .ConfigureAwait(false);
 

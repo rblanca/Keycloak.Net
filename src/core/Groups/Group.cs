@@ -98,10 +98,17 @@ namespace Keycloak.Net
         /// </summary>
         /// <param name="realm">realm name (not id!)</param>
         /// <param name="groupId"></param>
-        public async Task<Group> GetGroupByIdAsync(string realm, string groupId)
+        /// <param name="briefRepresentation"></param>
+        public async Task<Group> GetGroupByIdAsync(string realm, string groupId, bool? briefRepresentation = null)
         {
+            var queryParams = new Dictionary<string, object?>
+            {
+                [nameof(briefRepresentation)] = briefRepresentation
+            };
+
             var result = await GetBaseUrl()
                 .AppendPathSegment($"/admin/realms/{realm}/groups/{groupId}")
+                .SetQueryParams(queryParams)
                 .GetJsonAsync<Group>()
                 .ConfigureAwait(false);
 
