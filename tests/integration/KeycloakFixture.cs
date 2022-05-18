@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Keycloak.Net.Model.AuthenticationManagement;
 using Keycloak.Net.Model.Clients;
 using Keycloak.Net.Model.ClientScopes;
 using Keycloak.Net.Model.Common;
 using Keycloak.Net.Model.Groups;
 using Keycloak.Net.Model.IdentityProviders;
+using Keycloak.Net.Model.ProtocolMappers;
 using Keycloak.Net.Model.RealmsAdmin;
 using Keycloak.Net.Model.Roles;
 using Keycloak.Net.Model.Users;
@@ -262,9 +264,23 @@ namespace Keycloak.Net.Tests
             {
                 Name = "normalClientScope",
                 Description = "normal client scope",
-                Attributes = new Attributes()
+                Attributes = new Attributes(),
+                ProtocolMappers = new List<ProtocolMapper>
+                {
+                    new ProtocolMapper
+                    {
+                        Name = "claim",
+                        Protocol = "openid-connect",
+                        ConsentRequired = false,
+                        Config = new ProtocolConfig
+                        {
+                            ClaimName = "claim",
+                            IdTokenClaim = true,
+                            UserInfoTokenClaim = true
+                        }
+                    }
+                }
             };
-
             return clientScope;
         }
 

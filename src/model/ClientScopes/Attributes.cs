@@ -15,5 +15,8 @@ namespace Keycloak.Net.Model.ClientScopes
 
         [JsonProperty("include.in.token.scope")]
         public bool? IncludeInTokenScope { get; set; }
+
+        [JsonProperty("scope.type")]
+        public string Type { get; set; } = ScopeType.ApiScope;
     }
 }

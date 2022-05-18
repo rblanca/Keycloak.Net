@@ -23,7 +23,7 @@ namespace Keycloak.Net.Model.ProtocolMappers
         public string? Protocol { get; set; }
 
         [JsonProperty("protocolMapper")]
-        // ReSharper disable once InconsistentNaming
-        public string? _ProtocolMapper { get; set; }
+        // Default to Claim Param Token protocolMapper
+        public string? _ProtocolMapper { get; set; } = ClaimMapperTypes.OidcClaimsParam;
     }
 }

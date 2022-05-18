@@ -60,8 +60,8 @@ namespace Keycloak.Net
         /// <param name="viewableOnly">filter clients that cannot be viewed in full by admin</param>
         public async Task<IEnumerable<Client>?> GetClientsAsync(
             string realm,
-            bool? briefRepresentation = null,
             string? clientId = null,
+            bool? briefRepresentation = null,
             int? first = null,
             int? max = null,
             string? q = null,

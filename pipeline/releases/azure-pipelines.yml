@@ -38,7 +38,7 @@ variables:
   value: $(ProjectPath)/publish
   readonly: true
 - name: NugetConfigPath
-  value: $(SolutionPath)/Nuget.config
+  value: $(SolutionPath)/NuGet.Config
   readonly: true
 - name: ReportsPath
   value: $(SolutionPath)/Reports

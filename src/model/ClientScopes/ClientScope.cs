@@ -25,6 +25,6 @@ namespace Keycloak.Net.Model.ClientScopes
         public string? Protocol { get; set; }
 
         [JsonProperty("protocolMappers")]
-        public IEnumerable<ProtocolMapper>? ProtocolMappers { get; set; }
+        public IEnumerable<ProtocolMapper>? ProtocolMappers { get; set; } 
     }
 }
