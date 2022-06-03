@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace Keycloak.Net.Tests.Util
+namespace Keycloak.Net.Tests
 {
     internal class KeyCloakServer
     {
@@ -38,17 +38,8 @@ namespace Keycloak.Net.Tests.Util
                     .CreateClient();
             }
 
-            var containers = await _dockerClient.Containers.ListContainersAsync(
-            new ContainersListParameters()
+            if (!ShouldStartNewContanerAsync(recreateContainerIfAvailable).Result)
             {
-                Limit = 10,
-            });
-
-            var existed = containers.Any(c => c.State == "running" && c.Image == DockerImageName && c.Names.Contains($"/{ContainerName}"));
-
-            if (existed && !recreateContainerIfAvailable)
-            {
-                _containerStarted = true;
                 return;
             }
 
@@ -95,6 +86,27 @@ namespace Keycloak.Net.Tests.Util
             }
         }
 
+        private static async Task<bool> ShouldStartNewContanerAsync(bool recreateContainerIfAvailable)
+        {
+            var containers = await _dockerClient.Containers.ListContainersAsync(
+              new ContainersListParameters()
+              {
+                  Limit = 10,
+              });
+
+            var existed = containers.Any(c => c.State == "running" && c.Image == DockerImageName && c.Names.Contains($"/{ContainerName}"));
+
+            if (existed && !recreateContainerIfAvailable)
+            {
+                _containerStarted = true;
+                return false;
+            }
+
+            await RemoveContainerIfAvailable();
+
+            return true;
+        }
+
         private static async Task RemoveContainerIfAvailable()
         {
             try
@@ -112,8 +124,6 @@ namespace Keycloak.Net.Tests.Util
 
         private static async Task StartsServerContainerInternal(CreateContainerParameters containerParameters)
         {
-
-            await RemoveContainerIfAvailable();
             await PullImage();
 
             Console.WriteLine($"Creating container {ContainerName} from image {DockerImageName}.");

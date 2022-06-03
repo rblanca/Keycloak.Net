@@ -6,7 +6,6 @@ using Keycloak.Net.Model.Clients;
 using Keycloak.Net.Model.RealmsAdmin;
 using Keycloak.Net.Model.Roles;
 using Keycloak.Net.Model.Users;
-using Keycloak.Net.Tests.Util;
 using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]

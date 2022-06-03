@@ -129,8 +129,7 @@ stages:
           '--configuration=$(BuildConfiguration) 
           --no-restore 
           --verbosity=normal
-          --collect:"XPlat Code Coverage"
-          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
+          --collect:"XPlat Code Coverage"'
 
     - task: PublishTestResults@2
       displayName: Publish Test Results '**/*.trx'
@@ -144,7 +143,7 @@ stages:
     - task: reportgenerator@5
       displayName: 'Generate coverage report'
       inputs:
-        reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml;$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+        reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
         targetdir: '$(Agent.TempDirectory)'
         reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
 

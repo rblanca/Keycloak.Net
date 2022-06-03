@@ -9,7 +9,6 @@ using Keycloak.Net.Model.ProtocolMappers;
 using Keycloak.Net.Model.RealmsAdmin;
 using Keycloak.Net.Model.Roles;
 using Keycloak.Net.Model.Users;
-using Keycloak.Net.Tests.Util;
 
 namespace Keycloak.Net.Tests.CustomRealmTest
 {

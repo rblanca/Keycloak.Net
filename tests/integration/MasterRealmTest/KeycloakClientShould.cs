@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Keycloak.Net.Tests.Util;
 using Xunit;
 
 namespace Keycloak.Net.Tests.MasterRealmTest
