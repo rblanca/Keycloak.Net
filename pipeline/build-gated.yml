@@ -146,6 +146,7 @@ stages:
       inputs:
         reports: '**/coverage.opencover.xml;**/cobertura-coverage.xml'
         targetdir: '$(Agent.TempDirectory)'
+        sourcedirs: '$(Agent.TempDirectory)'
         reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
 
     - task: SonarQubeAnalyze@5
