@@ -40,9 +40,6 @@ variables:
 - name: NugetConfigPath
   value: $(SolutionPath)/NuGet.Config
   readonly: true
-- name: ReportsPath
-  value: $(SolutionPath)/Reports
-  readonly: true
 - name: BuildPlatform
   value: ${{ parameters.targetBuild }}
 - name: BuildConfiguration
@@ -54,7 +51,7 @@ variables:
 - name: VmImage
   value: ${{ parameters.vmImage }}
 - name: TestResultDirectory
-  value: $(System.DefaultWorkingDirectory)/TestResults/CoverageReport
+  value: $(System.DefaultWorkingDirectory)/TestResults
 - name: SonarQubeReportPath
   value: $(TestResultDirectory)/SonarQube.xml
 stages:

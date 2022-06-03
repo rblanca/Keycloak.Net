@@ -40,9 +40,6 @@ variables:
 - name: NugetConfigPath
   value: $(SolutionPath)/NuGet.Config
   readonly: true
-- name: ReportsPath
-  value: $(SolutionPath)/Reports
-  readonly: true
 - name: BuildPlatform
   value: ${{ parameters.targetBuild }}
 - name: BuildConfiguration
@@ -54,7 +51,7 @@ variables:
 - name: VmImage
   value: ${{ parameters.vmImage }}
 - name: TestResultDirectory
-  value: $(System.DefaultWorkingDirectory)/TestResults/CoverageReport
+  value: $(System.DefaultWorkingDirectory)/TestResults
 - name: SonarQubeReportPath
   value: $(TestResultDirectory)/SonarQube.xml
 stages:
@@ -110,15 +107,6 @@ stages:
         version: 6.0.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
     
-    - task: DotNetCoreCLI@2
-      displayName: dotnet restore
-      inputs:
-        command: restore
-        feedsToUse: config
-        nugetConfigPath: $(NugetConfigPath)
-        arguments: -r $(TargetRuntime) -v diag
-        noCache: true
-
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build Keycloak SDK nuget packages'
       inputs:
