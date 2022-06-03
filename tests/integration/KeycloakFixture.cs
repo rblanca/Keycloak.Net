@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Keycloak.Net.Model.AuthenticationManagement;
 using Keycloak.Net.Model.Clients;
 using Keycloak.Net.Model.ClientScopes;
@@ -10,7 +11,7 @@ using Keycloak.Net.Model.ProtocolMappers;
 using Keycloak.Net.Model.RealmsAdmin;
 using Keycloak.Net.Model.Roles;
 using Keycloak.Net.Model.Users;
-using Microsoft.Extensions.Configuration;
+using Keycloak.Net.Tests.Util;
 
 namespace Keycloak.Net.Tests
 {
@@ -96,14 +97,9 @@ namespace Keycloak.Net.Tests
 
         private void GetKeycloakClient()
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true)
-                .Build();
-
-            Url = configuration["url"];
-            _username = configuration["userName"];
-            _password = configuration["password"];
+            Url = KeyCloakServer.keyCloakEndpoint;
+            _username = KeyCloakServer.keyCloakAdminUser;
+            _password = KeyCloakServer.keyCloakAdminPassword;
 
             AdminCliClient = new KeycloakClient(Url, MasterRealm, "admin-cli", _username, _password);
             TestClient = new KeycloakClient(Url, Realm._Realm!, Client.ClientId, Client.Secret!);

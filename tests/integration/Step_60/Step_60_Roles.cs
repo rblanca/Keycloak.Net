@@ -8,12 +8,12 @@ namespace Keycloak.Net.Tests
 {
     /// <summary>
     /// Integration tests for 'Roles' management.
-    /// </summary>
-    [Collection(KeycloakClientTests.Roles)]
+    /// </summary> 
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Step6_0
+    [TestPriority(60)]
+    public class Step_60_Roles: KeycloakClientTests
     {
-        public Step6_0(KeycloakFixture fixture)
+        public Step_60_Roles(KeycloakFixture fixture)
         {
             _keycloak = fixture.TestClient;
             _fixture = fixture;
@@ -37,7 +37,7 @@ namespace Keycloak.Net.Tests
 
         #region Realm Role
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task GetRoleByNameAsync_Realm()
         {
             var result = await _keycloak.GetRoleByNameAsync(_realm, _fixture.Role.Name!);
@@ -53,56 +53,56 @@ namespace Keycloak.Net.Tests
             results.Should().ContainSingle(r => r.Id.Equals(_fixture.Role.Id));
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task AddRoleCompositesAsync_Realm()
         {
             var result = await _keycloak.AddCompositeRolesByNameAsync(_realm, _fixture.Role.Name!, new[] { _fixture.Role });
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRoleCompositesAsync_Realm()
         {
             var result = await _keycloak.GetCompositeRolesByNameAsync(_realm, _fixture.Role.Name!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRealmRoleCompositesAsync_Realm()
         {
             var result = await _keycloak.GetCompositeRealmRolesByNameAsync(_realm, _fixture.Role.Name!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientRoleCompositesAsync_Realm()
         {
             var result = await _keycloak.GetCompositeClientRolesByNameAsync(_realm, _fixture.Role.Name!, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task RemoveRoleCompositesAsync_Realm()
         {
             var result = await _keycloak.RemoveCompositeRolesByNameAsync(_realm, _fixture.Role.Name!, new[] { _fixture.Role });
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateRoleByNameAsync_Realm()
         {
             var result = await _keycloak.UpdateRoleByNameAsync(_realm, _fixture.Role.Name!, _fixture.Role);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRoleAuthorizationPermissionsInitializedAsync_Realm()
         {
             var result = await _keycloak.GetRoleAuthorizationPermissionsInitializedByNameAsync(_realm, _fixture.Role.Name!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task SetRoleAuthorizationPermissionsInitializedAsync_Realm()
         {
             var result = await _keycloak.SetRoleAuthorizationPermissionsInitializedByNameAsync(_realm, _fixture.Role.Name!, _fixture.ManagementPermission);
@@ -127,7 +127,7 @@ namespace Keycloak.Net.Tests
 
         #region Client Role
 
-        [Fact, TestCasePriority(-11)]
+        [Fact, TestPriority(-11)]
         public async Task CreateRoleAsync_Client()
         {
             _fixture.Client = (await _keycloak.GetClientsAsync(_realm, _fixture.Client.ClientId!)).Single();
@@ -135,7 +135,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task GetRoleByNameAsync_Client()
         {
             var result = await _keycloak.GetClientRoleByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!);
@@ -150,35 +150,35 @@ namespace Keycloak.Net.Tests
             results.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task AddRoleCompositesAsync_Client()
         {
             var result = await _keycloak.AddCompositeRolesByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!, new[] { _clientRole });
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRoleCompositesAsync_Client()
         {
             var result = await _keycloak.GetCompositeRolesByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientRoleCompositesAsync_Client()
         {
             var result = await _keycloak.GetCompositeClientRolesByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!, _fixture.Client.Id!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task RemoveRoleCompositesAsync_Client()
         {
             var result = await _keycloak.RemoveCompositeRolesByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!, new[] { _clientRole });
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateRoleByNameAsync_Client()
         {
             var result = await _keycloak.UpdateClientRoleByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!, _clientRole);
@@ -199,14 +199,14 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientRoleAuthorizationPermissionsInitializedAsync_Client()
         {
             var result = await _keycloak.GetClientRoleAuthorizationPermissionsInitializedByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task SetRoleAuthorizationPermissionsInitializedAsync_Client()
         {
             var result = await _keycloak.SetClientRoleAuthorizationPermissionsInitializedByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!, _fixture.ManagementPermission);
@@ -220,7 +220,7 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(10)]
+        [Fact, TestPriority(10)]
         public async Task DeleteRoleByNameAsync_Client()
         {
             var result = await _keycloak.DeleteClientRoleByNameAsync(_realm, _fixture.Client.Id!, _clientRole.Name!);

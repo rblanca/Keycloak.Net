@@ -11,11 +11,11 @@ namespace Keycloak.Net.Tests
     /// <summary>
     /// Integration tests for 'Realms Admin' management.
     /// </summary>
-    [Collection(KeycloakClientTests.RealmsAdmin)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Step2_0
+    [TestPriority(20)]
+    public class Step_20_RealmsAdmin : KeycloakClientTests
     {
-        public Step2_0(KeycloakFixture fixture)
+        public Step_20_RealmsAdmin(KeycloakFixture fixture)
         {
             _keycloak = fixture.TestClient;
             _fixture = fixture;
@@ -32,7 +32,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-1)]
+        [Fact, TestPriority(-1)]
         public async Task GetRealmAsync()
         {
             var result = await _keycloak.GetRealmAsync(_realm);
@@ -40,7 +40,7 @@ namespace Keycloak.Net.Tests
             _fixture.Realm = result;
         }
 
-        [Fact, TestCasePriority(-1)]
+        [Fact, TestPriority(-1)]
         public async Task GetRealmAsync_NotExists_ShouldThrowException()
         {
             var act = async () => await _keycloak.GetRealmAsync("realmNotExists");
@@ -55,7 +55,7 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(-2)]
+        [Fact, TestPriority(-2)]
         public async Task UpdateRealmAsync()
         {
             var result = await _keycloak.UpdateRealmAsync(_realm, _fixture.Realm);

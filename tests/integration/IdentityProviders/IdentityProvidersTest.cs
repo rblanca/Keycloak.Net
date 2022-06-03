@@ -8,9 +8,8 @@ using Xunit;
 
 namespace Keycloak.Net.Tests
 {
-    [Collection(KeycloakClientTests.IdentityProviders)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class IdentityProvidersTest
+    public class IdentityProvidersTest : KeycloakClientTests
     {
         public IdentityProvidersTest(KeycloakFixture fixture)
         {
@@ -29,21 +28,21 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-11)]
+        [Fact, TestPriority(-11)]
         public async Task AddIdentityProviderAsync()
         {
             var result = await _keycloak.AddIdentityProviderAsync(_realm, _fixture.IdentityProvider);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateIdentityProviderAsync()
         {
             var result = await _keycloak.UpdateIdentityProviderAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.IdentityProvider);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetIdentityProviderInstancesAsync()
         {
             _identityProviders = (await _keycloak.GetIdentityProviderInstancesAsync(_realm)).ToList();
@@ -65,42 +64,42 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task SetIdentityProviderAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.SetIdentityProviderAuthorizationPermissionsInitializedAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.ManagementPermission);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetIdentityProviderAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.GetIdentityProviderAuthorizationPermissionsInitializedAsync(_realm, _fixture.IdentityProvider.Alias!);
             result.Should().NotBeNull();
         }
 
-        [Fact(Skip = "Not working"), TestCasePriority(3)]
+        [Fact(Skip = "Not working"), TestPriority(3)]
         public async Task GetIdentityProviderMapperTypesAsync()
         {
             var result = await _keycloak.GetIdentityProviderMapperTypesAsync(_realm, _fixture.IdentityProvider.Alias!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task AddIdentityProviderMapperAsync()
         {
             var result = await _keycloak.AddIdentityProviderMapperAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.IdentityProviderMapper);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetIdentityProviderMappersAsync()
         {
             var result = await _keycloak.GetIdentityProviderMappersAsync(_realm, _fixture.IdentityProvider.Alias!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetIdentityProviderMapperByIdAsync()
         {
             var result = (await _keycloak.GetIdentityProviderMapperByIdAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.IdentityProviderMapper.Id!)).ToList();
@@ -108,14 +107,14 @@ namespace Keycloak.Net.Tests
             _fixture.IdentityProviderMapper = result.First();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task UpdateIdentityProviderMapperAsync()
         {
             var result = await _keycloak.UpdateIdentityProviderMapperAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.IdentityProviderMapper.Id!, _fixture.IdentityProviderMapper);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task DeleteIdentityProviderMapperAsync()
         {
             var result = await _keycloak.DeleteIdentityProviderMapperAsync(_realm, _fixture.IdentityProvider.Alias!, _fixture.IdentityProviderMapper.Id!);
@@ -129,14 +128,14 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(10)]
+        [Fact, TestPriority(10)]
         public async Task DeleteIdentityProviderAsync()
         {
             var result = await _keycloak.DeleteIdentityProviderAsync(_realm, _fixture.IdentityProvider.Alias!);
             result.Should().BeTrue();
         }
 
-        [Fact(Skip = "Not working"), TestCasePriority(11)]
+        [Fact(Skip = "Not working"), TestPriority(11)]
         public async Task ImportIdentityProviderAsync()
         {
             var result = await _keycloak.ImportIdentityProviderAsync(_realm, _fixture.IdentityProvider.SerializeJson());

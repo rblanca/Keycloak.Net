@@ -9,9 +9,8 @@ namespace Keycloak.Net.Tests
     /// <summary>
     /// Integration tests for Oidc 'Authentication'.
     /// </summary>
-    [Collection(KeycloakClientTests.Authentication)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class OidcTest
+    public class OidcTest : KeycloakClientTests
     {
         public OidcTest(KeycloakFixture fixture)
         {
@@ -82,7 +81,7 @@ namespace Keycloak.Net.Tests
             var keycloak = _fixture.AdminCliClient;
             var result = await keycloak.GetUserinfoAsync(_fixture.MasterRealm);
             result.Should().NotBeNullOrEmpty();
-            result[JwtClaimTypes.PreferredUserName].Should().Be("admin");
+            result[JwtClaimTypes.PreferredUserName].Should().Be("test-admin");
         }
         
         [Fact]
@@ -104,7 +103,7 @@ namespace Keycloak.Net.Tests
             var keycloak = new KeycloakClient(_fixture.Url, () => rawToken.AccessToken);
             var result = await keycloak.GetUserinfoAsync(_realm);
             result.Should().NotBeNullOrEmpty();
-            result[JwtClaimTypes.PreferredUserName].Should().Be("admin");
+            result[JwtClaimTypes.PreferredUserName].Should().Be("test-admin");
         }
 
         /// <summary>

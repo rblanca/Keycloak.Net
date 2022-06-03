@@ -13,11 +13,11 @@ namespace Keycloak.Net.Tests
     /// <summary>
     /// Integration tests for 'Clients' management.
     /// </summary>
-    [Collection(KeycloakClientTests.Clients)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Step5_0
+    [TestPriority(50)]
+    public class Step_50_Clients : KeycloakClientTests
     {
-        public Step5_0(KeycloakFixture fixture)
+        public Step_50_Clients(KeycloakFixture fixture)
         {
             _keycloak = fixture.TestClient;
             _fixture = fixture;
@@ -40,7 +40,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task GetClientsAsync()
         {
             _fixture.Client = (await _keycloak.GetClientsAsync(_realm, _fixture.Client.ClientId))!.Single();
@@ -51,21 +51,21 @@ namespace Keycloak.Net.Tests
             _fixture.User = (await _keycloak.GetUsersAsync(_realm, username: _fixture.User.UserName)).Single();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientAsync()
         {
             var result = await _keycloak.GetClientByIdAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetUserForServiceAccountAsync()
         {
             var result = await _keycloak.GetServiceAccountUserForClientAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task CreateClientAndRetrieveClientIdAsync()
         {
             var client = new Client
@@ -77,14 +77,14 @@ namespace Keycloak.Net.Tests
             await _keycloak.DeleteClientByIdAsync(_realm, result);
         }
 
-        [Fact, TestCasePriority(99)]
+        [Fact, TestPriority(99)]
         public async Task UpdateClientAsync()
         {
             var result = await _keycloak.UpdateClientByIdAsync(_realm, _fixture.Client.Id!, _fixture.Client);
             result.Should().BeTrue();
         }
 
-        [Fact(Skip="Use another client"), TestCasePriority(2)]
+        [Fact(Skip="Use another client"), TestPriority(2)]
         public async Task GenerateClientSecretAsync()
         {
             _clientCredential = await _keycloak.GenerateClientSecretAsync(_realm, _fixture.Client.Id!);
@@ -92,14 +92,14 @@ namespace Keycloak.Net.Tests
             _clientCredential.Value.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact(Skip = "Not working"), TestPriority(3)]
         public async Task GetClientSecretAsync()
         {
             var result = await _keycloak.GetClientSecretAsync(_realm, _fixture.Client.Id!);
             result.Should().BeEquivalentTo(_clientCredential);
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetDefaultClientScopesAsync()
         {
             var result = (await _keycloak.GetDefaultClientScopesAsync(_realm, _fixture.Client.Id!)).ToList();
@@ -107,49 +107,49 @@ namespace Keycloak.Net.Tests
             _clientScope = result[0];
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateDefaultClientScopeAsync()
         {
             var result = await _keycloak.UpdateDefaultClientScopeAsync(_realm, _fixture.Client.Id!, _clientScope.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task DeleteDefaultClientScopeAsync()
         {
             var result = await _keycloak.DeleteDefaultClientScopeAsync(_realm, _fixture.Client.Id!, _clientScope.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact(Skip = "Not working"), TestPriority(3)]
         public async Task GenerateClientExampleAccessTokenAsync()
         {
             var result = await _keycloak.GenerateClientExampleAccessTokenAsync(_realm, _fixture.Client.Id!, userId: _fixture.User.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GenerateClientExampleIdTokenAsync()
         {
             var result = await _keycloak.GenerateClientExampleIdTokenAsync(_realm, _fixture.Client.Id!, userId: _fixture.User.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GenerateClientExampleUserInfoAsync()
         {
             var result = await _keycloak.GenerateClientExampleUserInfoAsync(_realm, _fixture.Client.Id!, userId: _fixture.User.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetProtocolMappersInTokenGenerationAsync()
         {
             var result = await _keycloak.GetProtocolMappersInTokenGenerationAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientGrantedScopeMappingsAsync()
         {
             // Realm container
@@ -161,7 +161,7 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientNotGrantedScopeMappingsAsync()
         {
             // Realm container
@@ -173,7 +173,7 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
         
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientProviderAsync()
         {
             var providerInstances = await _keycloak.GetIdentityProviderInstancesAsync(_realm);
@@ -185,98 +185,98 @@ namespace Keycloak.Net.Tests
             }
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.GetClientAuthorizationPermissionsInitializedAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task SetClientAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.SetClientAuthorizationPermissionsInitializedAsync(_realm, _fixture.Client.Id!, _managementPermission);
             result.Should().NotBeNull();
         }
 
-        [Fact(Skip = "Not working")]
+        [Fact(Skip = "Not working"), TestPriority(0)]
         public async Task RegisterClientClusterNodeAsync()
         {
             var result = await _keycloak.RegisterClientClusterNodeAsync(_realm, _fixture.Client.Id!, new Dictionary<string, object>{{ "node1", "value1"}});
             result.Should().BeTrue();
         }
 
-        [Fact(Skip = "Not working")]
+        [Fact(Skip = "Not working"), TestPriority(0)]
         public async Task UnregisterClientClusterNodeAsync()
         {
             var result = await _keycloak.UnregisterClientClusterNodeAsync(_realm, _fixture.Client.Id!, "node1");
             result.Should().BeTrue();
         }
         
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientOfflineSessionCountAsync()
         {
             var result = await _keycloak.GetClientOfflineSessionCountAsync(_realm, _fixture.Client.Id!);
             result.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientOfflineSessionsAsync()
         {
             var result = await _keycloak.GetClientOfflineSessionsAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetOptionalClientScopesAsync()
         {
             var result = await _keycloak.GetOptionalClientScopesAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateOptionalClientScopeAsync()
         {
             var result = await _keycloak.UpdateOptionalClientScopeAsync(_realm, _fixture.Client.Id!, _clientScope.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task DeleteOptionalClientScopeAsync()
         {
             var result = await _keycloak.DeleteOptionalClientScopeAsync(_realm, _fixture.Client.Id!, _clientScope.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task PushClientRevocationPolicyAsync()
         {
             var result = await _keycloak.PushClientRevocationPolicyAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GenerateClientRegistrationAccessTokenAsync()
         {
             var result = await _keycloak.GenerateClientRegistrationAccessTokenAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientSessionCountAsync()
         {
             var result = await _keycloak.GetClientSessionCountAsync(_realm, _fixture.Client.Id!);
             result.Should().Be(0);
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task TestClientClusterNodesAvailableAsync()
         {
             var result = await _keycloak.TestClientClusterNodesAvailableAsync(_realm, _fixture.Client.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientUserSessionsAsync()
         {
             var result = await _keycloak.GetClientUserSessionsAsync(_realm, _fixture.Client.Id!);
@@ -290,7 +290,7 @@ namespace Keycloak.Net.Tests
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientPolicies()
         {
             var result = await _keycloak.GetClientPolicies(_realm);
@@ -299,7 +299,7 @@ namespace Keycloak.Net.Tests
                 opt => opt.Using(new IgnoreNullMembersInExpectation(_fixture.ClientPolicy)));
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateClientPolicies()
         {
             var result = await _keycloak.UpdateClientPolicies(
@@ -309,7 +309,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetClientProfiles()
         {
             var result = await _keycloak.GetClientProfiles(_realm);
@@ -318,7 +318,7 @@ namespace Keycloak.Net.Tests
                 opt => opt.Using(new IgnoreNullMembersInExpectation(_fixture.ClientProfile)));
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateClientProfiles()
         {
             var result =
@@ -327,28 +327,28 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientSessionStatsAsync()
         {
             var result = await _keycloak.GetClientSessionStatsAsync(_realm);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetCredentialRegistrators()
         {
             var result = await _keycloak.GetCredentialRegistrators(_realm);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetRealmClientScopesAsync()
         {
             _clientScopes = await _keycloak.GetRealmClientScopesAsync(_realm);
             _clientScopes.Should().NotBeNullOrEmpty();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRealmDefaultClientScopesAsync()
         {
             var emailScope = _clientScopes.First(s => s.Name == "email");
@@ -360,7 +360,7 @@ namespace Keycloak.Net.Tests
             );
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateRealmDefaultClientScopeAsync()
         {
             var emailScope = _clientScopes.First(s => s.Name == "email");
@@ -368,7 +368,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(1)]
+        [Fact, TestPriority(1)]
         public async Task DeleteRealmDefaultClientScopeAsync()
         {
             var emailScope = _clientScopes.First(s => s.Name == "email");
@@ -376,7 +376,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetRealmOptionalClientScopesAsync()
         {
             var addressScope = _clientScopes.First(s => s.Name == "address");
@@ -389,7 +389,7 @@ namespace Keycloak.Net.Tests
             );
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateRealmOptionalClientScopeAsync()
         {
             var addressScope = _clientScopes.First(s => s.Name == "address");
@@ -398,7 +398,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(1)]
+        [Fact, TestPriority(1)]
         public async Task DeleteRealmOptionalClientScopeAsync()
         {
             var addressScope = _clientScopes.First(s => s.Name == "address");

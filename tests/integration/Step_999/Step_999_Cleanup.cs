@@ -2,17 +2,18 @@
 using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
+using Keycloak.Net.Tests.Util;
 
 namespace Keycloak.Net.Tests
 {
     /// <summary>
     /// Cleanup for the integration test
     /// </summary>
-    [Collection(KeycloakClientTests.Cleanup)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Step9_0
+    [TestPriority(999)]
+    public class Step_999_Cleanup : KeycloakClientTests 
     {
-        public Step9_0(KeycloakFixture fixture)
+        public Step_999_Cleanup(KeycloakFixture fixture)
         {
             _fixture = fixture;
             _keycloak = fixture.AdminCliClient;
@@ -30,14 +31,14 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(10)]
+        [Fact, TestPriority(10)]
         public async Task DeleteRoleByNameAsync_Realm()
         {
             var result = await _keycloak.DeleteRoleByNameAsync(_realm, _fixture.Role.Name!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(94)]
+        [Fact, TestPriority(94)]
         public async Task DeleteClientAsync()
         {
             _fixture.Client = (await _keycloak.GetClientsAsync(_realm, clientId: _fixture.Client.ClientId))!.Single();
@@ -45,7 +46,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(95)]
+        [Fact, TestPriority(95)]
         public async Task DeleteUserGroupAsync()
         {
             _fixture.User = (await _keycloak.GetUsersAsync(_realm, username: _fixture.User.UserName))!.Single();
@@ -54,21 +55,21 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(96)]
+        [Fact, TestPriority(96)]
         public async Task DeleteGroupAsync()
         {
             var result = await _keycloak.DeleteGroupByIdAsync(_realm, _fixture.Group.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(97)]
+        [Fact, TestPriority(97)]
         public async Task DisableUserCredentialsAsync()
         {
             var result = await _keycloak.DisableUserCredentialsAsync(_realm, _fixture.User.Id!, new[] { "password" });
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(98)]
+        [Fact, TestPriority(98)]
         public async Task DeleteUserCredential()
         {
             _fixture.Credential = (await _keycloak.GetUserCredentials(_realm, _fixture.User.Id!))!.Single();
@@ -76,18 +77,24 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(99)]
+        [Fact, TestPriority(99)]
         public async Task DeleteUserAsync()
         {
             var result = await _keycloak.DeleteUserByIdAsync(_realm, _fixture.User.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(100)]
+        [Fact, TestPriority(100)]
         public async Task DeleteRealmAsync()
         {
             var result = await _keycloak.DeleteRealmAsync(_masterRealm, _fixture.Realm._Realm!);
             result.Should().BeTrue();
+        }
+
+        [Fact, TestPriority(101)]
+        public async Task RemoveKeyCloakTestServer()
+        {
+            await KeyCloakServer.DisposeAsync();
         }
     }
 }

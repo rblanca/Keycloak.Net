@@ -6,9 +6,8 @@ using Xunit;
 
 namespace Keycloak.Net.Tests
 {
-    [Collection(KeycloakClientTests.ClientInitialAccess)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class ClientInitialAccessTest
+    public class ClientInitialAccessTest : KeycloakClientTests
     {
         public ClientInitialAccessTest(KeycloakFixture fixture)
         {
@@ -27,7 +26,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task CreateInitialAccessTokenAsync()
         {
             _access = await _keycloak.CreateInitialAccessTokenAsync(_realm, new ClientInitialAccessCreatePresentation{Count = 1, Expiration = 300});
@@ -42,7 +41,7 @@ namespace Keycloak.Net.Tests
             result[0].Should().BeEquivalentTo(_access, opt => opt.Excluding(_ => _.Token));
         }
 
-        [Fact, TestCasePriority(10)]
+        [Fact, TestPriority(10)]
         public async Task DeleteInitialAccessTokenAsync()
         {
             var result = await _keycloak.DeleteInitialAccessTokenAsync(_realm,  _access.Id!);

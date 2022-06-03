@@ -7,9 +7,8 @@ namespace Keycloak.Net.Tests
     /// <summary>
     /// Integration tests for Uma2 'Authentication'.
     /// </summary>
-    [Collection(KeycloakClientTests.Authentication)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Uma2Test
+    public class Uma2Test : KeycloakClientTests
     {
         public Uma2Test(KeycloakFixture fixture)
         {
@@ -26,7 +25,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact]
+        [Fact, TestPriority(2)]
         public async Task GetUma2ConfigurationAsync()
         {
             var result = await _keycloak.GetUma2ConfigurationAsync(_realm);

@@ -4,9 +4,8 @@ using Xunit;
 
 namespace Keycloak.Net.Tests
 {
-    [Collection(KeycloakClientTests.ClientRegistrationPolicy)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class ClientRegistrationPolicyTest
+    public class ClientRegistrationPolicyTest : KeycloakClientTests
     {
         public ClientRegistrationPolicyTest(KeycloakFixture fixture)
         {

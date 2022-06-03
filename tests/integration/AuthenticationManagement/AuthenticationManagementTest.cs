@@ -7,9 +7,8 @@ using Xunit;
 
 namespace Keycloak.Net.Tests
 {
-    [Collection(KeycloakClientTests.AuthenticationManagement)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class AuthenticationManagementTest
+    public class AuthenticationManagementTest : KeycloakClientTests
     {
         public AuthenticationManagementTest(KeycloakFixture fixture)
         {
@@ -36,7 +35,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-30)]
+        [Fact, TestPriority(-30)]
         public async Task GetAuthenticatorProvidersAsync()
         {
             var result = (await _keycloak.GetAuthenticatorProvidersAsync(_realm)).ToList();
@@ -44,21 +43,21 @@ namespace Keycloak.Net.Tests
             _fixture.AuthenticatorProvider = result[0];
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetClientAuthenticatorProvidersAsync()
         {
             var result = await _keycloak.GetClientAuthenticatorProvidersAsync(_realm);
             result.Should().NotBeNullOrEmpty();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetAuthenticatorProviderConfigurationDescriptionAsync()
         {
             var result = await _keycloak.GetAuthenticatorProviderConfigurationDescriptionAsync(_realm, _fixture.AuthenticatorProvider.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetConfigurationDescriptionsForAllClientsAsync()
         {
             var result = await _keycloak.GetConfigurationDescriptionsForAllClientsAsync(_realm);
@@ -76,21 +75,21 @@ namespace Keycloak.Net.Tests
         //    }
         //}
 
-        [Fact, TestCasePriority(-20)]
+        [Fact, TestPriority(-20)]
         public async Task CreateAuthenticationFlowAsync()
         {
             var result = await _keycloak.CreateAuthenticationFlowAsync(_realm, _fixture.AuthenticationFlow);
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task DuplicateAuthenticationFlowAsync()
         {
             var result = await _keycloak.DuplicateAuthenticationFlowAsync(_realm, _fixture.AuthenticationFlow.Alias!, $"{_fixture.AuthenticationFlow.Alias!}2");
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-19)]
+        [Fact, TestPriority(-19)]
         public async Task GetAuthenticationFlowsAsync()
         {
             var results = (await _keycloak.GetAuthenticationFlowsAsync(_realm)).ToList();
@@ -99,42 +98,42 @@ namespace Keycloak.Net.Tests
             _fixture.AuthenticationFlow.Id.Should().NotBeNullOrEmpty();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetAuthenticationFlowByIdAsync()
         {
             var result = await _keycloak.GetAuthenticationFlowByIdAsync(_realm, _fixture.AuthenticationFlow.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateAuthenticationFlowAsync()
         {
             var result = await _keycloak.UpdateAuthenticationFlowAsync(_realm, _fixture.AuthenticationFlow.Id!, _fixture.AuthenticationFlow);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task DeleteAuthenticationFlowAsync()
         {
             var result = await _keycloak.DeleteAuthenticationFlowAsync(_realm, _fixture.AuthenticationFlow.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task AddAuthenticationFlowExecutionAsync()
         {
             var result = await _keycloak.AddAuthenticationFlowExecutionAsync(_realm, _fixture.AuthenticationFlow.Alias!, new AuthenticationFlowExecution{Provider = _fixture.AuthenticatorProvider.Id!});
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-9)]
+        [Fact, TestPriority(-9)]
         public async Task AddAuthenticationFlowAndExecutionToAuthenticationFlowAsync()
         {
             var result = await _keycloak.AddAuthenticationFlowAndExecutionToAuthenticationFlowAsync(_realm, _fixture.AuthenticationFlow.Alias!, _childFlow);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-8)]
+        [Fact, TestPriority(-8)]
         public async Task GetAuthenticationFlowExecutionsAsync()
         {
             var results = (await _keycloak.GetAuthenticationFlowExecutionsAsync(_realm, _fixture.AuthenticationFlow.Alias!)).ToList();
@@ -142,21 +141,21 @@ namespace Keycloak.Net.Tests
             _flowExecutionInfo = results.Single(r => r.DisplayName!.Equals(_childFlow.Alias));
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetAuthenticationExecutionAsync()
         {
             var result = await _keycloak.GetAuthenticationExecutionAsync(_realm, _flowExecutionInfo.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateAuthenticationFlowExecutionsAsync()
         {
             var result = await _keycloak.UpdateAuthenticationFlowExecutionsAsync(_realm, _fixture.AuthenticationFlow.Alias!, _flowExecutionInfo);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateAuthenticationExecutionConfigurationAsync()
         {
             var result = await _keycloak.UpdateAuthenticationExecutionConfigurationAsync(_realm, _flowExecutionInfo.Id!, new AuthenticatorConfig
@@ -167,28 +166,28 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task LowerAuthenticationExecutionPriorityAsync()
         {
             var result = await _keycloak.LowerAuthenticationExecutionPriorityAsync(_realm, _flowExecutionInfo.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task RaiseAuthenticationExecutionPriorityAsync()
         {
             var result = await _keycloak.RaiseAuthenticationExecutionPriorityAsync(_realm, _flowExecutionInfo.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(4)]
+        [Fact, TestPriority(4)]
         public async Task DeleteAuthenticationExecutionAsync()
         {
             var result = await _keycloak.DeleteAuthenticationExecutionAsync(_realm, _flowExecutionInfo.Id!);
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task GetFormActionProvidersAsync()
         {
             var results = (await _keycloak.GetFormActionProvidersAsync(_realm)).ToList();
@@ -196,14 +195,14 @@ namespace Keycloak.Net.Tests
             _fixture.FormActionProvider = results[0];
         }
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
         public async Task GetFormProvidersAsync()
         {
             var result = (await _keycloak.GetFormProvidersAsync(_realm)).ToList();
             result.Should().NotBeNullOrEmpty();
         }
 
-        //[Fact, TestCasePriority(-10)]
+        //[Fact, TestPriority(-10)]
         //public async Task RegisterRequiredActionAsync()
         //{
         //    var result = await _keycloak.RegisterRequiredActionAsync(_realm, new RequiredAction
@@ -214,7 +213,7 @@ namespace Keycloak.Net.Tests
         //    result.Should().BeTrue();
         //}
 
-        [Fact, TestCasePriority(-9)]
+        [Fact, TestPriority(-9)]
         public async Task GetRequiredActionsAsync()
         {
             var results = (await _keycloak.GetRequiredActionsAsync(_realm)).ToList();
@@ -222,42 +221,42 @@ namespace Keycloak.Net.Tests
             _fixture.RequiredActionProvider = results[0];
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetRequiredActionByAliasAsync()
         {
             var result = await _keycloak.GetRequiredActionByAliasAsync(_realm, _fixture.RequiredActionProvider.Alias!);
             result.Should().BeEquivalentTo(_fixture.RequiredActionProvider, opt => opt.Using(new IgnoreNullMembersInExpectation(_fixture.RequiredActionProvider)));
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateRequiredActionAsync()
         {
             var result = await _keycloak.UpdateRequiredActionAsync(_realm, _fixture.RequiredActionProvider.Alias!, _fixture.RequiredActionProvider);
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task LowerRequiredActionPriorityAsync()
         {
             var result = await _keycloak.LowerRequiredActionPriorityAsync(_realm, _fixture.RequiredActionProvider.Alias!);
             result.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task RaiseRequiredActionPriorityAsync()
         {
             var result = await _keycloak.RaiseRequiredActionPriorityAsync(_realm, _fixture.RequiredActionProvider.Alias!);
             result.Should().BeTrue();
         }
 
-        //[Fact, TestCasePriority(4)]
+        //[Fact, TestPriority(4)]
         //public async Task DeleteRequiredActionAsync()
         //{
         //    var result = await _keycloak.DeleteRequiredActionAsync(_realm, _fixture.RequiredActionProvider.Alias!);
         //    result.Should().BeTrue();
         //}
 
-        [Fact]
+        [Fact, TestPriority(0)]
         public async Task GetUnregisteredRequiredActionsAsync()
         {
             var results = (await _keycloak.GetUnregisteredRequiredActionsAsync(_realm)).ToList();

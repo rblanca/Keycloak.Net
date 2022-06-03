@@ -9,11 +9,11 @@ namespace Keycloak.Net.Tests
     /// <summary>
     /// Integration tests for 'Groups' management.
     /// </summary>
-    [Collection(KeycloakClientTests.Groups)]
     [TestCaseOrderer("Keycloak.Net.Tests.TestCasePriorityOrderer", "Keycloak.Net.Tests")]
-    public class Step4_0
+    [TestPriority(40)]
+    public class Step_40_Groups: KeycloakClientTests
     {
-        public Step4_0(KeycloakFixture fixture)
+        public Step_40_Groups(KeycloakFixture fixture)
         {
             _keycloak = fixture.TestClient;
             _fixture = fixture;
@@ -34,7 +34,7 @@ namespace Keycloak.Net.Tests
 
         #endregion
 
-        [Fact, TestCasePriority(-10)]
+        [Fact, TestPriority(-10)]
 
         public async Task GetGroupHierarchyAsync()
         {
@@ -58,7 +58,7 @@ namespace Keycloak.Net.Tests
             result.Should().BeGreaterThan(0);
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task UpdateGroupAsync()
         {
             var result = await _keycloak.UpdateGroupByIdAsync(_realm, _fixture.Group.Id!, _fixture.Group);
@@ -72,21 +72,21 @@ namespace Keycloak.Net.Tests
             result.Should().BeTrue();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetGroupClientAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.GetGroupClientAuthorizationPermissionsInitializedAsync(_realm, _fixture.Group.Id!);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(2)]
+        [Fact, TestPriority(2)]
         public async Task SetGroupClientAuthorizationPermissionsInitializedAsync()
         {
             var result = await _keycloak.SetGroupClientAuthorizationPermissionsInitializedAsync(_realm, _fixture.Group.Id!, _fixture.ManagementPermission);
             result.Should().NotBeNull();
         }
 
-        [Fact, TestCasePriority(3)]
+        [Fact, TestPriority(3)]
         public async Task GetGroupUsersAsync()
         {
             var result = await _keycloak.GetGroupUsersAsync(_realm, _fixture.Group.Id!);

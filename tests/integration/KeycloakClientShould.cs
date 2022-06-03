@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Keycloak.Net.Tests.Util;
 using Microsoft.Extensions.Configuration;
 
 namespace Keycloak.Net.Tests
@@ -9,16 +10,11 @@ namespace Keycloak.Net.Tests
 
         public KeycloakClientShould()
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
+            var url = KeyCloakServer.keyCloakEndpoint;
+            var username = KeyCloakServer.keyCloakAdminUser;
+            var password = KeyCloakServer.keyCloakAdminPassword;
 
-            var url = configuration["url"];
-            var userName = configuration["userName"];
-            var password = configuration["password"];
-
-            _client = new KeycloakClient(url, "unitTest", "admin-cli", userName, password);
+            _client = new KeycloakClient(url, "unitTest", "admin-cli", username, password);
         }
     }
 }

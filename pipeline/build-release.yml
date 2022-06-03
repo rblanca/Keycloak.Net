@@ -1,0 +1,190 @@
+trigger: 
+- master
+
+pool:
+  vmImage: $(VmImage)
+
+parameters:
+# Build
+- name: targetBuild # See https://docs.microsoft.com/en-us/dotnet/standard/frameworks
+  displayName: Target Build Platform
+  type: string
+  default: net6.0
+- name: targetRuntime # See https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+  displayName: Target Build Runtime
+  type: string
+  default: linux-x64
+- name: vmImage # See https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
+  displayName: Target Pool Image
+  type: string
+  default: windows-2019
+
+variables:
+#General
+- name: ProductName
+  value: AuthenticationService
+  readonly: true
+- name: DmmFeed
+  value: https://pkgs.dev.azure.com/arvato-systems-dmm/_packaging/DmmFeed/nuget/v3/index.json
+  readonly: true
+#Build
+- name: SolutionPath
+  value: $(Build.SourcesDirectory)
+  readonly: true
+- name: ProjectPath
+  value: $(SolutionPath)/src/core
+  readonly: true
+- name: PublishPath
+  value: $(ProjectPath)/publish
+  readonly: true
+- name: NugetConfigPath
+  value: $(SolutionPath)/NuGet.Config
+  readonly: true
+- name: ReportsPath
+  value: $(SolutionPath)/Reports
+  readonly: true
+- name: BuildPlatform
+  value: ${{ parameters.targetBuild }}
+- name: BuildConfiguration
+  value: Release
+- name: TargetRuntime
+  value: ${{ parameters.targetRuntime }}
+- name: TargetFramework
+  value: ${{ parameters.targetBuild }}
+- name: VmImage
+  value: ${{ parameters.vmImage }}
+- name: CoverageReportDirectory
+  value: $(System.DefaultWorkingDirectory)/TestResults/CoverageReport
+- name: SonarQubeReportPath
+  value: $(CoverageReportDirectory)/SonarQube.xml
+stages:
+- stage: __default
+  jobs:
+  - job: PublishKeycloakSDK
+    displayName: Publish Keycloak SDK
+    timeoutInMinutes: 30
+    steps:
+    - checkout: self
+      clean: true
+      submodules: true
+
+    - task: gitversion/setup@0
+      displayName: Install GitVersion
+      inputs:
+        versionSpec: '5.x'
+
+    - task: gitversion/execute@0
+      displayName: Set GitVersion
+      inputs:
+        useConfigFile: true
+        configFilePath: 'GitVersion.yml'
+        updateAssemblyInfo: true
+        additionalArguments: AssemblyInfo.cs /ensureassemblyinfo
+
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'SonarQube_DevOps'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'Keycloak.Net'
+        cliProjectName: 'Keycloak.Net'
+        cliProjectVersion:
+          '$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)'
+        cliSources: '.'
+        extraProperties: |
+          sonar.exclusions=**/*.yml,**/*.yaml
+          sonar.coverageReportPaths=$(SonarQubeReportPath)
+            
+    - task: NuGetToolInstaller@1
+      displayName: 'Use NuGet '
+      inputs:
+        checkLatest: true
+
+    - task: NuGetAuthenticate@0
+      displayName: 'NuGet Authenticate'
+
+    - task: UseDotNet@2
+      displayName: 'Add .Net Core SDK(stopped being added by default)'
+      inputs:
+        packageType: sdk
+        version: 6.0.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+    
+    - task: DotNetCoreCLI@2
+      displayName: dotnet restore
+      inputs:
+        command: restore
+        feedsToUse: config
+        nugetConfigPath: $(NugetConfigPath)
+        arguments: -r $(TargetRuntime) -v diag
+        noCache: true
+
+    - task: PowerShell@2
+      inputs: 
+        targetType: inline
+        script: New-Item -Path $(Build.ArtifactStagingDirectory) -Name "packages" -ItemType "directory"
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build Keycloak SDK nuget packages'
+      inputs:
+        command: build
+        feedsToUse: config
+        nugetConfigPath: $(NugetConfigPath)
+        publishWebProjects: false
+        projects: '$(SolutionPath)/Keycloak.Net.sln'
+        arguments: -c $(BuildConfiguration) -p:BuildRuntimeIdentifier=$(TargetRuntime) -f $(TargetFramework) --no-restore
+        zipAfterPublish: false
+        noCache: true
+
+    - task: DotNetCoreCLI@2
+      displayName: dotnet test
+      inputs:
+        command: test
+        projects: 'Keycloak.Net.sln'
+        includesymbols: true
+        feedsToUse: config
+        nugetConfigPath: $(NugetConfigPath)
+        arguments: 
+          '--configuration=$(BuildConfiguration) 
+          --no-restore 
+          --verbosity=normal 
+          --collect:"XPlat Code Coverage"
+          --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
+          
+    - task: reportgenerator@5
+      displayName: 'Generate coverage report'
+      inputs:
+        reports: '**/coverage.opencover.xml;**/cobertura-coverage.xml'
+        targetdir: '$(CoverageReportDirectory)'
+        reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
+
+    - task: SonarQubeAnalyze@5
+      displayName: Complete the SonarQube analysis
+      
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet pack Keycloak SDK nuget packages'
+      inputs:
+        command: pack
+        outputDir: $(Build.ArtifactStagingDirectory)/packages
+        packagesToPack: $(SolutionPath)/src/core/Keycloak.Net.csproj
+        arguments:  -c $(BuildConfiguration) -p:BuildRuntimeIdentifier=$(TargetRuntime) --no-build
+        zipAfterPublish: false
+        versioningScheme: byEnvVar
+        versionEnvVar: GitVersion.SemVer
+
+    - task: NuGetCommand@2
+      displayName: 'publish nuget package to DmmFeed'
+      inputs:
+        command: 'push'
+        feedsToUse: config
+        nugetConfigPath: $(NugetConfigPath)
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'DmmFeed'
+        allowPackageConflicts: true
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish as pipeline artifact(temporarily)'
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/packages
+        artifactName: SDKs
