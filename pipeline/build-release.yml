@@ -50,10 +50,8 @@ variables:
   value: ${{ parameters.targetBuild }}
 - name: VmImage
   value: ${{ parameters.vmImage }}
-- name: TestResultDirectory
-  value: $(System.DefaultWorkingDirectory)/TestResults
 - name: SonarQubeReportPath
-  value: $(TestResultDirectory)/SonarQube.xml
+  value: $(Agent.TempDirectory)/SonarQube.xml
 stages:
 - stage: __default
   jobs:
@@ -130,16 +128,24 @@ stages:
         arguments: 
           '--configuration=$(BuildConfiguration) 
           --no-restore 
-          --verbosity=normal 
-          --results-directory=$(TestResultDirectory)
+          --verbosity=normal
           --collect:"XPlat Code Coverage"
           -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover'
 
+    - task: PublishTestResults@2
+      displayName: Publish Test Results '**/*.trx'
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/*.trx'
+        searchFolder: '$(Agent.TempDirectory)'
+        mergeTestResults: true
+        publishRunAttachments: true
+      
     - task: reportgenerator@5
       displayName: 'Generate coverage report'
       inputs:
         reports: '**/coverage.opencover.xml;**/cobertura-coverage.xml'
-        targetdir: '$(TestResultDirectory)'
+        targetdir: '$(Agent.TempDirectory)'
         reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
 
     - task: SonarQubeAnalyze@5
