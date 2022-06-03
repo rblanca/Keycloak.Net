@@ -36,7 +36,7 @@ namespace Keycloak.Net.Tests
                 return 0;
 
             var attr = type.GetCustomAttribute<TestPriorityAttribute>();
-            return attr?.Priority ?? 100;
+            return attr?.Priority ?? 90;
         }
     }
 }

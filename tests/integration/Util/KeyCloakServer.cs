@@ -44,7 +44,7 @@ namespace Keycloak.Net.Tests.Util
                 Limit = 10,
             });
 
-            var existed = containers.Any(c => c.State == "running" && c.Names.Contains($"/{ContainerName}"));
+            var existed = containers.Any(c => c.State == "running" && c.Image == DockerImageName && c.Names.Contains($"/{ContainerName}"));
 
             if (existed && !recreateContainerIfAvailable)
             {
