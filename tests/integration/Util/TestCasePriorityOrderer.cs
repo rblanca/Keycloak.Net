@@ -13,14 +13,14 @@ namespace Keycloak.Net.Tests
         public IEnumerable<TTestCase> OrderTestCases<TTestCase>(IEnumerable<TTestCase> testCases)
             where TTestCase : ITestCase
         {
-            var assemblyName = typeof(TestCasePriorityAttribute).AssemblyQualifiedName!;
+            var assemblyName = typeof(TestPriorityAttribute).AssemblyQualifiedName!;
             var sortedMethods = new SortedDictionary<int, List<TTestCase>>();
             foreach (TTestCase testCase in testCases)
             {
                 var priority = testCase.TestMethod.Method
                     .GetCustomAttributes(assemblyName)
                     .FirstOrDefault()
-                    ?.GetNamedArgument<int>(nameof(TestCasePriorityAttribute.Priority)) ?? 0;
+                    ?.GetNamedArgument<int>(nameof(TestPriorityAttribute.Priority)) ?? 0;
 
                 GetOrCreate(sortedMethods, priority).Add(testCase);
             }
