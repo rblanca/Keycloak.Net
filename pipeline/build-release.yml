@@ -144,9 +144,8 @@ stages:
     - task: reportgenerator@5
       displayName: 'Generate coverage report'
       inputs:
-        reports: '**/coverage.opencover.xml;**/coverage.cobertura.xml'
+        reports: '$(Agent.TempDirectory)/**/coverage.opencover.xml;$(Agent.TempDirectory)/**/coverage.cobertura.xml'
         targetdir: '$(Agent.TempDirectory)'
-        sourcedirs: '$(Agent.TempDirectory)'
         reporttypes: 'HtmlInline_AzurePipelines;Cobertura;SonarQube'
 
     - task: SonarQubeAnalyze@5
