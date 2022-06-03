@@ -45,7 +45,7 @@ namespace Keycloak.Net.Tests.CustomRealmTest
 
         #endregion
 
-        [Fact, TestPriority(-10)]
+        [Fact, TestPriority(-100)]
         public async Task StartKeyCloakTestServer()
         {
             await KeyCloakServer.StartsServerContainer();
