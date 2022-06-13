@@ -51,5 +51,11 @@ namespace Keycloak.Net.Model.Components
 
         [Description("user-attribute-ldap-mapper")]
         UserAttributeLdapMapper,
+
+        /// <summary>
+        /// Vidicore Identity Provider
+        /// </summary>
+        [Description("vidicore-provider")]
+        VidicoreProvider
     }
 }

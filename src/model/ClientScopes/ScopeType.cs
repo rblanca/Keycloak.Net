@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Keycloak.Net.Model.ClientScopes
+﻿namespace Keycloak.Net.Model.ClientScopes
 {
     public static class ScopeType
     {
+        //represents ID4's ApiResource scope type
+        public const string ApiResource = "apiresource";
+
         //represents ID4's ApiScope scope type
         public const string ApiScope = "apiscope";
 

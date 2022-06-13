@@ -31,5 +31,8 @@ namespace Keycloak.Net.Model.Components
         /// </summary>
         [JsonProperty("enabled")]
         public IEnumerable<bool>? Enabled { get; set; } = new[] { true };
+
+        [JsonProperty("vidiCoreUrl")]
+        public IEnumerable<string>? VidicoreUrl { get; set;  }
     }
 }

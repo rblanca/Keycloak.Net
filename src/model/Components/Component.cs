@@ -18,7 +18,7 @@ namespace Keycloak.Net.Model.Components
 
         /// <inheritdoc cref="ComponentProviderTypesId"/>
         [JsonProperty("providerId")]
-        public ComponentProviderTypesId ProviderId { get; set; }
+        public string? ProviderId { get; set; }
 
         /// <summary>
         /// The actual implementation type of the <see cref="ProviderId"/>.
