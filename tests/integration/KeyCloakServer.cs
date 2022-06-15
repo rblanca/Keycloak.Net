@@ -52,6 +52,7 @@ namespace Keycloak.Net.Tests
                 ExposedPorts = new Dictionary<string, EmptyStruct>
                 {
                     { "8080", default(EmptyStruct) },
+                    { "8443", default(EmptyStruct) },
                 },
                 HostConfig = new HostConfig
                 {
@@ -63,12 +64,16 @@ namespace Keycloak.Net.Tests
                                 new PortBinding {HostPort = ServerPort.ToString()}
                             }
                         },
+                        {
+                            "8443", new List<PortBinding>
+                            {
+                                new PortBinding {HostPort = "8443"}
+                            }
+                        }
                     },
                 },
                 Env = new List<string>
                 {
-                    "USER_UID=1000",
-                    "USER_GID=1000",
                     $"KEYCLOAK_PASSWORD={keyCloakAdminPassword}",
                     $"KEYCLOAK_USER={keyCloakAdminUser}"
                 }
@@ -124,26 +129,35 @@ namespace Keycloak.Net.Tests
 
         private static async Task StartsServerContainerInternal(CreateContainerParameters containerParameters)
         {
-            await PullImage();
-
-            Console.WriteLine($"Creating container {ContainerName} from image {DockerImageName}.");
-
-            var response = await _dockerClient.Containers.CreateContainerAsync(containerParameters);
-
-            Console.Out.WriteLine($"Starting container {ContainerName} with id {response.ID}.");
-            var success =
-                await _dockerClient.Containers.StartContainerAsync(response.ID, new ContainerStartParameters());
-
-            if (!success)
+            try
             {
-                _containerStarted = false;
+                await PullImage();
 
-                throw new Exception($"Container {ContainerName} is not able to start.");
+                Console.WriteLine($"Creating container {ContainerName} from image {DockerImageName}.");
+
+                var response = await _dockerClient.Containers.CreateContainerAsync(containerParameters);
+
+                Console.Out.WriteLine($"Starting container {ContainerName} with id {response.ID}.");
+                var success =
+                    await _dockerClient.Containers.StartContainerAsync(response.ID, new ContainerStartParameters());
+
+                if (!success)
+                {
+                    _containerStarted = false;
+
+                    throw new Exception($"Container {ContainerName} is not able to start.");
+                }
+
+                _containerStarted = true;
+
+                await WaitForContainerToBeReady();
+
             }
-
-            _containerStarted = true;
-
-            await WaitForContainerToBeReady();
+            catch(Exception ex)
+            {
+                var message = ex.Message;
+                throw;
+            }
         }
 
         private static async Task PullImage()

@@ -19,6 +19,9 @@ namespace Keycloak.Net.Model.ProtocolMappers
         [JsonProperty("claim.name")]
         public string ClaimName { get; set; } = null!;
 
+        [JsonProperty("claim.value")]
+        public string ClaimValue { get; set; } = null!;
+
         [JsonProperty("friendly.name")]
         public string FriendlyName { get; set; } = null!;
 

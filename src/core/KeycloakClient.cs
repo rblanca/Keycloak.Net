@@ -96,7 +96,8 @@ namespace Keycloak.Net
                     // Wrap all error messages return from the Keycloak server into exception
                     var errorContent = call.HttpResponseMessage != null ? await call.HttpResponseMessage.Content.ReadAsStringAsync() : string.Empty;
                     var keycloakError = errorContent.DeserializeJson<KeycloakError>();
-                    call.Exception = new KeycloakException(keycloakError.ToString(), call.Exception);
+                    var error = keycloakError != null ? keycloakError.ToString() : call.Exception.InnerException != null ? $"Error: {call.Exception.Message} Internal Error: {call.Exception.InnerException.Message}" : $"Error: {call.Exception.Message}";
+                    call.Exception = new KeycloakException(error, call.Exception);
 
                     if (_settings.ReturnNullOnNotFound)
                     {
