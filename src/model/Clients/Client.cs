@@ -172,7 +172,6 @@ namespace Keycloak.Net.Model.Clients
         [JsonProperty("protocol")]
         public string? Protocol { get; set; }
 
-        /// <inheritdoc cref="ProtocolMappers"/>
         [JsonProperty("protocolMappers")]
         public IEnumerable<ProtocolMapper>? ProtocolMappers { get; set; }
 
