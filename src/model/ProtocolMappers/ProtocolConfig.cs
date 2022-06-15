@@ -10,6 +10,9 @@ namespace Keycloak.Net.Model.ProtocolMappers
         [JsonProperty("access.token.claim")]
         public bool AccessTokenClaim { get; set; }
 
+        [JsonProperty("access.tokenResponse.claim")]
+        public bool AccessTokenResponseClaim { get; set; }
+
         [JsonProperty("attribute.name")]
         public string AttributeName { get; set; } = null!;
 
@@ -18,6 +21,9 @@ namespace Keycloak.Net.Model.ProtocolMappers
 
         [JsonProperty("claim.name")]
         public string ClaimName { get; set; } = null!;
+
+        [JsonProperty("claim.value")]
+        public string ClaimValue { get; set; } = null!;
 
         [JsonProperty("friendly.name")]
         public string FriendlyName { get; set; } = null!;
@@ -54,6 +60,21 @@ namespace Keycloak.Net.Model.ProtocolMappers
 
         [JsonProperty("user.attribute.locality")]
         public string UserAttributeLocality { get; set; } = null!;
+
+        [JsonProperty("user.session.note")]
+        public string UserSessionNote { get; set; } = null!;
+
+        [JsonProperty("role")]
+        public string Role { get; set; } = null!;
+
+        [JsonProperty("new.role.name")]
+        public string NewRoleName { get; set; } = null!;         
+
+        [JsonProperty("included.client.audience")]
+        public string IncludedClientAudience { get; set; } = null!;
+        
+        [JsonProperty("included.custom.audience")]
+        public string IncludedCustomAudience { get; set; } = null!;
 
         [JsonProperty("userinfo.token.claim")]
         public bool UserInfoTokenClaim { get; set; }

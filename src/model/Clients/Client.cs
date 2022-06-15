@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Keycloak.Net.Model.ProtocolMappers;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Model.Clients
@@ -171,9 +172,8 @@ namespace Keycloak.Net.Model.Clients
         [JsonProperty("protocol")]
         public string? Protocol { get; set; }
 
-        /// <inheritdoc cref="ClientProtocolMapper"/>
         [JsonProperty("protocolMappers")]
-        public IEnumerable<ClientProtocolMapper>? ProtocolMappers { get; set; }
+        public IEnumerable<ProtocolMapper>? ProtocolMappers { get; set; }
 
         /// <summary>
         /// If true, this client do not require a secret;<br/>

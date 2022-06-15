@@ -17,7 +17,7 @@ namespace Keycloak.Net.Tests.MasterRealmTest
         }
 
         [Fact, TestPriority(-10)]
-        public async Task StartKeyCloakTestServer()
+        public async Task _StartKeyCloakTestServer()
         {
             await KeyCloakServer.StartsServerContainer();
         }
