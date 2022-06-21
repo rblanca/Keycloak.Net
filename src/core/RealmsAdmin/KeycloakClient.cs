@@ -46,7 +46,7 @@ namespace Keycloak.Net
         /// <summary>
         /// GET /realms <br/>
         /// </summary>
-        public async Task<IEnumerable<Realm>?> GetRealmsAsync(string realm)
+        public async Task<IEnumerable<Realm>?> GetRealmsAsync()
         {
             var response = await GetBaseUrl()
                 .AppendPathSegment("/admin/realms")

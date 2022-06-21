@@ -51,7 +51,7 @@ namespace Keycloak.Net.Tests.CustomRealmTest
         [Fact]
         public async Task GetRealmsAsync()
         {
-            var result = (await _keycloak.GetRealmsAsync(_realm))!.ToList();
+            var result = (await _keycloak.GetRealmsAsync())!.ToList();
             result.Should().NotBeNullOrEmpty();
         }
 
