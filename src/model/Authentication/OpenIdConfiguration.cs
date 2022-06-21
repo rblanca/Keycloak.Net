@@ -1,4 +1,5 @@
 ﻿using System;
+using Flurl;
 using Newtonsoft.Json;
 
 namespace Keycloak.Net.Model.Authentication
@@ -20,7 +21,7 @@ namespace Keycloak.Net.Model.Authentication
         /// REQUIRED. Discover the OAuth 2.0/OpenID Connect endpoints, capabilities, supported cryptographic algorithms and features.
         /// </summary>
         [JsonProperty("discovery_endpoint")]
-        public Uri? DiscoveryEndpoint => new Uri(Issuer!, ".well-known/openid-configuration");
+        public Uri? DiscoveryEndpoint => new Uri(Url.Combine(Issuer!.AbsoluteUri, ".well-known/openid-configuration"));
 
         /// <summary>
         /// REQUIRED. URL of the OP's OAuth 2.0 <a href="https://openid.net/specs/openid-connect-discovery-1_0.html#OpenID.Core">Authorization Endpoint</a>. The authorization endpoint is used to
