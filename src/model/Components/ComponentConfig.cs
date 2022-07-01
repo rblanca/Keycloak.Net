@@ -34,5 +34,11 @@ namespace Keycloak.Net.Model.Components
 
         [JsonProperty("vidiCoreUrl")]
         public IEnumerable<string>? VidicoreUrl { get; set;  }
+
+        [JsonProperty("syncUserPassword")]
+        public IEnumerable<string>? SyncUserPassword { get; set; }
+
+        [JsonProperty("syncUserUsername")]
+        public IEnumerable<string>? SyncUserUsername { get; set; }
     }
 }
