@@ -34,6 +34,7 @@ namespace Keycloak.Net.Tests.CustomRealmTest
             IdentityProvider = GetIdentityProvider();
             IdentityProviderMapper = GetIdentityProviderMapper();
             ManagementPermission = GetManagementPermission();
+            ProtocolMappers = GetProtocolMappers();
         }
 
         #region Properties
@@ -87,6 +88,8 @@ namespace Keycloak.Net.Tests.CustomRealmTest
         public IdentityProviderMapper IdentityProviderMapper { get; set; }
 
         public ManagementPermission ManagementPermission { get; set; }
+
+        public ProtocolMapper[] ProtocolMappers { get; set; }
 
         #endregion
 
@@ -275,6 +278,37 @@ namespace Keycloak.Net.Tests.CustomRealmTest
                 }
             };
             return clientScope;
+        }
+
+        private ProtocolMapper[] GetProtocolMappers()
+        {
+            return new ProtocolMapper[]
+                {
+                    new ProtocolMapper
+                    {
+                        Name = "test-claim-1",
+                        Protocol = "openid-connect",
+                        ConsentRequired = false,
+                        Config = new ProtocolConfig
+                        {
+                            ClaimName = "test-claim-1",
+                            IdTokenClaim = true,
+                            UserInfoTokenClaim = true
+                        }
+                    },
+                    new ProtocolMapper
+                    {
+                        Name = "test-claim-2",
+                        Protocol = "openid-connect",
+                        ConsentRequired = false,
+                        Config = new ProtocolConfig
+                        {
+                            ClaimName = "test-claim-2",
+                            IdTokenClaim = true,
+                            UserInfoTokenClaim = true
+                        }
+                    }
+                };
         }
 
         private ClientPolicy GetClientPolicy()
