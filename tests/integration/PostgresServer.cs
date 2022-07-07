@@ -1,39 +1,41 @@
-﻿using System;
+﻿using Docker.DotNet;
+using Docker.DotNet.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Docker.DotNet;
-using Docker.DotNet.Models;
 
 namespace Keycloak.Net.Tests
 {
-    internal class KeyCloakServer
+    internal class PostgresServer
     {
-
         private static DockerClient _dockerClient;
 
         private static bool _containerStarted = false;
 
-        private static string ContainerName => "test-integration-keycloak-net";
+        public static string ContainerName => "test-integration-keycloak-net-postgres";
 
-        private static string DockerImageName => "bitnami/keycloak:18.0.2-debian-11-r4";
+        private static string DockerImageName => "postgres:13.7-alpine";
 
-        private static int ServerPort => 8082;
+        public static int DockerServerPort => 5432;
+
+        public static int ServerPort => 5430;
 
         private static int DelayTime => 3000;
 
-        internal static string keyCloakEndpoint => $"http://localhost:{ServerPort}";
+        internal static string DatabaseConnectionString => 
+            $"User ID={DatabaseAdminUser};Password={DatabaseAdminPassword};Host=localhost;Port={ServerPort};Database={DatabaseName};Pooling=true;";
 
-        internal static string keyCloakAdminUser => "test-admin";
+        public static string DatabaseName => "test-database";
 
-        internal static string keyCloakAdminPassword => "test-admin";
+        public static string DatabaseAdminUser => "test-admin";
+
+        public static string DatabaseAdminPassword => "test-admin";
 
         internal static async Task StartsServerContainer(bool recreateContainerIfAvailable = false)
         {
-            await PostgresServer.StartsServerContainer();
-
             if (_dockerClient == null)
             {
                 _dockerClient = new DockerClientConfiguration(new Uri(GetDockerEndpoint()))
@@ -47,75 +49,39 @@ namespace Keycloak.Net.Tests
 
             _containerStarted = true;
 
-            var network = await _dockerClient.Networks.InspectNetworkAsync("bridge");
-
-            var postgres = network.Containers.FirstOrDefault(x => x.Value != null && x.Value?.Name == PostgresServer.ContainerName);
-
-            var postgresIPv4Address = ParseSingleIPv4Address(postgres.Value.IPv4Address);
-
             var parameters = new CreateContainerParameters
             {
                 Name = ContainerName,
                 Image = DockerImageName,
                 ExposedPorts = new Dictionary<string, EmptyStruct>
                 {
-                    { "8080", default(EmptyStruct) },
-                    { "8443", default(EmptyStruct) },
+                    { $"{DockerServerPort}", default(EmptyStruct) },
                 },
                 HostConfig = new HostConfig
                 {
                     PortBindings = new Dictionary<string, IList<PortBinding>>
                     {
                         {
-                            "8080", new List<PortBinding>
+                            $"{DockerServerPort}", new List<PortBinding>
                             {
                                 new PortBinding {HostPort = ServerPort.ToString()}
-                            }
-                        },
-                        {
-                            "8443", new List<PortBinding>
-                            {
-                                new PortBinding {HostPort = "8443"}
                             }
                         }
                     },
                 },
                 Env = new List<string>
                 {
-                    $"KEYCLOAK_CREATE_ADMIN_USER=true",
-                    $"KEYCLOAK_ADMIN_USER={keyCloakAdminUser}",
-                    $"KEYCLOAK_ADMIN_PASSWORD={keyCloakAdminPassword}",
-                    $"KEYCLOAK_DATABASE_HOST={postgresIPv4Address}",
-                    $"KEYCLOAK_DATABASE_PORT=5432",
-                    $"KEYCLOAK_DATABASE_NAME={PostgresServer.DatabaseName}",
-                    $"KEYCLOAK_DATABASE_USER={PostgresServer.DatabaseAdminUser}",
-                    $"KEYCLOAK_DATABASE_PASSWORD={PostgresServer.DatabaseAdminPassword}"
+                    $"POSTGRES_PASSWORD={DatabaseAdminPassword}",
+                    $"POSTGRES_USER={DatabaseAdminUser}",
+                    $"POSTGRES_DB={DatabaseName}"
                 }
             };
 
             await StartsServerContainerInternal(parameters);
         }
 
-        internal static string ParseSingleIPv4Address(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-            {
-                throw new ArgumentException("Input string must not be null", input);
-            }
-
-            var addressBytesSplit = input.Trim().Split('/').ToList();
-            if (addressBytesSplit.Count != 2)
-            {
-                throw new ArgumentException("Input string was not in valid IPV4 format \"a.b.c.d/e\"", input);
-            }
-
-            return addressBytesSplit.First();
-        }
-
         internal static async Task DisposeAsync()
         {
-            await PostgresServer.DisposeAsync();
-
             if (_containerStarted)
             {
                 _containerStarted = false;
@@ -185,7 +151,7 @@ namespace Keycloak.Net.Tests
                 await WaitForContainerToBeReady();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var message = ex.Message;
                 throw;
@@ -231,9 +197,11 @@ namespace Keycloak.Net.Tests
             {
                 try
                 {
-                    using var httpClient = new HttpClient();
-                    var result = await httpClient.GetAsync($"{keyCloakEndpoint}");
-                    if (result.IsSuccessStatusCode)
+                    var connection = new Npgsql.NpgsqlConnection(DatabaseConnectionString);
+
+                    connection.Open();
+
+                    if (connection.State == System.Data.ConnectionState.Open)
                     {
                         return;
                     }
@@ -243,13 +211,13 @@ namespace Keycloak.Net.Tests
 
                 }
 
-                Console.WriteLine("Keycloak server is not ready. Will retry again.");
+                Console.WriteLine("Postgres server is not ready. Will retry again.");
                 await Task.Delay(DelayTime);
             }
 
             if (iRetry >= maxRetry)
             {
-                throw new Exception($"Unable to connect to keycloak after {maxRetry} retries.");
+                throw new Exception($"Unable to connect to Postgres after {maxRetry} retries.");
             }
         }
     }
