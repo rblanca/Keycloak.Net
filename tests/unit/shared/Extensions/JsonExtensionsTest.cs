@@ -3,6 +3,7 @@ using System.IO;
 using Keycloak.Net.Model.Clients;
 using Keycloak.Net.Shared.Json;
 using Xunit;
+using Keycloak.Net.Model.Root;
 
 namespace Keycloak.Net.Tests.Common.Extensions
 {
@@ -108,6 +109,50 @@ namespace Keycloak.Net.Tests.Common.Extensions
             foreach (var testCase in testCases)
             {
                 var result = testCase.IsValidJson();
+
+                // Assert
+                result.Should().BeFalse($"'{testCase}' should be false!");
+            }
+        }
+
+        [Fact]
+        public void TryDeserialized_ShouldReturnTrue_()
+        {
+            // Arrange
+            var testCases = new[]
+            {
+                "{\"error\":\"test\",\"error_description\":\"test2\"}"
+            };
+
+            // Act
+            foreach (var testCase in testCases)
+            {
+                var result = testCase.TryDeserializeJson<KeycloakError>(out var content);
+
+                // Assert
+                result.Should().BeTrue($"'{testCase}' should be false!");
+                content.Error.Should().Be("test");
+                content.ErrorDescription.Should().Be("test2");
+            }
+        }
+
+        [Fact]
+        public void TryDeserialized_ShouldReturnFalse_()
+        {
+            // Arrange
+            var testCases = new[]
+            {
+                "This is an invalid json",
+                string.Join(',', "str1", "str2"),
+                "{\"Str1\",\"Str2\"}",
+                ToString(),
+                "[\"test\",\"test2\"]"
+            };
+
+            // Act
+            foreach (var testCase in testCases)
+            {
+                var result = testCase.TryDeserializeJson<KeycloakError>(out var content);
 
                 // Assert
                 result.Should().BeFalse($"'{testCase}' should be false!");
