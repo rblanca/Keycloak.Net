@@ -52,6 +52,25 @@ namespace Keycloak.Net.Shared.Json
             return result;
         }
 
+        /// <summary>
+        /// Try deserializes a json string to an object
+        /// </summary>
+        public static bool TryDeserializeJson<T>(this string json, out T output, JsonSerializerSettings? options = null)
+        {
+            output = default;
+
+            try
+            {
+                var result = JsonConvert.DeserializeObject<T>(json, options ?? JsonSerializerSettings.Value);
+                output = result;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <inheritdoc cref="DeserializeJson{T}"/>
         public static object DeserializeJson(this string json, Type type, JsonSerializerSettings? options = null)
         {
