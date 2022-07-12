@@ -99,9 +99,10 @@ namespace Keycloak.Net
                     var error = string.Empty;
                     if (errorContent.TryDeserializeJson<KeycloakError>(out var errorMessage))
                     {
-                        error = errorMessage.ToString();
+                        error = errorMessage?.ToString();
                     }
-                    else
+
+                    if (string.IsNullOrEmpty(error))
                     {
                         error = call.Exception.FlattenError();
                     }
