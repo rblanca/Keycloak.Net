@@ -32,13 +32,34 @@ namespace Keycloak.Net.Model.Components
         [JsonProperty("enabled")]
         public IEnumerable<bool>? Enabled { get; set; } = new[] { true };
 
+        /// <summary>
+        /// Vidicore URL for Identity Source.
+        /// </summary>
         [JsonProperty("vidiCoreUrl")]
         public IEnumerable<string>? VidicoreUrl { get; set;  }
 
+        /// <summary>
+        /// User password used to make VidiCore queries for users/groups.
+        /// </summary>
         [JsonProperty("syncUserPassword")]
         public IEnumerable<string>? SyncUserPassword { get; set; }
 
+        /// <summary>
+        /// User used to make VidiCore queries for users/groups.
+        /// </summary>
         [JsonProperty("syncUserUsername")]
         public IEnumerable<string>? SyncUserUsername { get; set; }
+
+        /// <summary>
+        /// Period of time for recurring full sync.
+        /// </summary>
+        [JsonProperty("fullSyncPeriod")]
+        public IEnumerable<string>? FullSyncPeriod { get; set; }
+
+        /// <summary>
+        /// Period of time for recurring changed user sync.
+        /// </summary>
+        [JsonProperty("changedSyncPeriod")]
+        public IEnumerable<string>? ChangedSyncPeriod { get; set; }
     }
 }
